@@ -1,8 +1,9 @@
+import { Navigation } from '@/components/navigation';
+
 export default function Home() {
   return (
-    <main>
-      <h1>hola mundo</h1>
-      <h1 className="text-red-300 dark:text-blue-500">hola mundo</h1>
+    <main className="flex size-full flex-col items-center justify-start">
+      <Navigation />
     </main>
   );
 }
