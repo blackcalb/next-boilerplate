@@ -4,6 +4,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 
+import { MenuWrapper } from '@/components/menu/Menu';
+import { Navigation } from '@/components/navigation';
+import { MenuProvider } from '@/hooks/context/menu';
 import { cn } from '@/utils/cn';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,9 +23,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="size-full">
-      <body className={cn(inter.className, 'size-full')}>
+      <body
+        className={cn(
+          inter.className,
+          'size-full flex flex-col',
+          'bg-white dark:bg-black',
+        )}
+      >
         <ThemeProvider enableSystem attribute="class">
-          {children}
+          <MenuProvider>
+            <Navigation />
+
+            <div className="flex flex-1">
+              <MenuWrapper>title</MenuWrapper>
+              {children}
+            </div>
+          </MenuProvider>
         </ThemeProvider>
       </body>
     </html>
