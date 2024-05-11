@@ -15,6 +15,36 @@ type ComponentsVersions {
   identifier String
 }
 
+type RecordsAmount {
+  currency String
+  value    Int
+}
+
+model Budgets {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  budget      Int
+  categoryIds String[]
+  from        DateTime @db.Date
+  name        String
+  to          DateTime @db.Date
+  used        Int
+}
+
+model Categories {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  type String
+}
+
+model Records {
+  id         String        @id @default(auto()) @map("_id") @db.ObjectId
+  amount     RecordsAmount
+  categoryId String        @db.ObjectId
+  date       DateTime      @db.Date
+  subject    String
+  type       String
+}
+
 model components {
   id            String                  @id @default(auto()) @map("_id") @db.ObjectId
   description   String

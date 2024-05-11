@@ -14,6 +14,16 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colors: {
+        primary: 'rgb(var(--color-primary) / <alpha-value>)',
+        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+        success: 'rgb(var(--color-success) / <alpha-value>)',
+        warning: 'rgb(var(--color-warning) / <alpha-value>)',
+        error: 'rgb(var(--color-error) / <alpha-value>)',
+        info: 'rgb(var(--color-info) / <alpha-value>)',
+        light: 'rgb(var(--color-light) / <alpha-value>)',
+        dark: 'rgb(var(--color-dark) / <alpha-value>)',
+      },
     },
   },
   plugins: [],

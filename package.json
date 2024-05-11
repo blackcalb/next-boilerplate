@@ -19,7 +19,9 @@
     "serve-storybook": "run-s storybook:*",
     "test-storybook:ci": "start-server-and-test serve-storybook http://127.0.0.1:6006 test-storybook",
     "prepare": "husky",
-    "prisma": "prisma db pull --force"
+    "prisma": "prisma db pull --force && prisma generate",
+    "prisma:pull": "prisma db pull --force",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
