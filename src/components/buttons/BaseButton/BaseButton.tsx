@@ -3,12 +3,13 @@ import React from 'react';
 
 interface BaseButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label?: string;
   type: NonNullable<React.ButtonHTMLAttributes<HTMLButtonElement>['type']>;
+  iconStart?: React.ReactNode;
+  children?: React.ReactNode;
 }
 export const BaseButton = ({
-  label,
   type,
+  children,
   ...props
 }: Readonly<BaseButtonProps>) => {
   return (
@@ -17,7 +18,7 @@ export const BaseButton = ({
       type={type}
       className="inline-block rounded-md p-2 hover:cursor-grab hover:bg-gray-200 active:cursor-grabbing dark:hover:bg-gray-800"
     >
-      {label}
+      {children}
     </button>
   );
 };

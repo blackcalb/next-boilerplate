@@ -1,11 +1,7 @@
 import Prisma from '@prisma/client';
 
+import type { RecordType } from '@/types/moneyTrack';
 import { sleep } from '@/utils/sleep';
-
-enum RecordType {
-  income = 'income',
-  expense = 'expense',
-}
 
 export async function getLastNRecords(
   type: keyof typeof RecordType,

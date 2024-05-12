@@ -5,6 +5,7 @@ import { getLastNRecords } from '@/queries/records/getLastNRecords';
 
 export default async function IncomesPage() {
   const incomes = await getLastNRecords('income', 5);
+
   return (
     <div className="grid grid-cols-4 items-center">
       {incomes.length === 0 && (

@@ -4,7 +4,7 @@ export default async function BudgetsPage() {
   const currentBudgets = await getCurrentBudgets();
 
   return (
-    <div className="grid grid-cols-4">
+    <div className="grid grid-cols-3">
       {currentBudgets.map((budget) => (
         <div key={budget.id} className="border border-gray-200 p-4">
           <h2 className="text-lg font-semibold">{budget.name}</h2>

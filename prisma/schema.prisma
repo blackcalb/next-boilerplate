@@ -7,17 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type ComponentsLatestVersion {
-  identifier String
-}
-
-type ComponentsVersions {
-  identifier String
-}
-
 type RecordsAmount {
   currency String
   value    Int
+}
+
+model Accounts {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  balance  Float
+  currency String
+  name     String
 }
 
 model Budgets {
@@ -38,22 +37,10 @@ model Categories {
 
 model Records {
   id         String        @id @default(auto()) @map("_id") @db.ObjectId
+  accountId  String        @db.ObjectId
   amount     RecordsAmount
   categoryId String        @db.ObjectId
   date       DateTime      @db.Date
   subject    String
   type       String
-}
-
-model components {
-  id            String                  @id @default(auto()) @map("_id") @db.ObjectId
-  description   String
-  latestVersion ComponentsLatestVersion
-  name          String
-  versions      ComponentsVersions[]
-}
-
-model test {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  hello String
 }
