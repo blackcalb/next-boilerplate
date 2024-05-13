@@ -1,18 +1,35 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useFormState } from 'react-dom';
+
 import { createNewRecord } from '@/actions/money-track/add/record';
 import FormButton from '@/components/buttons/FormButton';
 import type { RecordType } from '@/types/moneyTrack';
 
-export default async function CreateNewRecord({
-  bankAccounts,
-  categories,
-  type,
-}: {
+interface CreateNewRecordProps {
   bankAccounts: { id: string; name: string }[];
   categories: { id: string; name: string }[];
   type: RecordType;
-}) {
+}
+
+export default function CreateNewRecord({
+  bankAccounts,
+  categories,
+  type,
+}: Readonly<CreateNewRecordProps>) {
+  const [state, formAction] = useFormState(createNewRecord, null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.data) {
+      router.push('/money-track');
+    }
+  }, [router, state?.data]);
+
   return (
-    <form className="flex flex-col" action={createNewRecord}>
+    <form className="flex flex-col" action={formAction}>
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="redirect" value="/money-track" />
       <label htmlFor="subject">
@@ -20,8 +37,7 @@ export default async function CreateNewRecord({
         <input type="text" id="subject" name="subject" />
       </label>
       <label htmlFor="amount">
-        amount
-        <input type="text" id="amount" name="amount" />
+        amount <input type="text" id="amount" name="amount" />
       </label>
       <label htmlFor="category">
         Category

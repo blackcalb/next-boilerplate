@@ -1,13 +1,14 @@
+'use server';
+
 import Prisma from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
+import { AddRecordSchema } from '@/schemas/money-track/records';
 import { RecordType } from '@/types/moneyTrack';
 
-export async function createNewRecord(formData: FormData) {
-  'use server';
-
+export async function createNewRecord(_: any, formData: FormData) {
   const prisma = new Prisma.PrismaClient();
+
   const bank = await prisma.accounts.findUnique({
     where: { id: formData.get('account') as string },
   });
@@ -28,9 +29,16 @@ export async function createNewRecord(formData: FormData) {
     date: new Date(formData.get('date') as string),
   };
 
-  await prisma.records.create({ data });
+  const isValid = AddRecordSchema.safeParse(data);
 
-  // if (type === RecordType.income) {
+  if (isValid.error) {
+    return {
+      error: isValid.error.format(),
+    };
+  }
+
+  const newRecord = await prisma.records.create({ data });
+
   // update account balance
   const factor = type === RecordType.income ? 1 : -1;
   await prisma.accounts.update({
@@ -41,7 +49,6 @@ export async function createNewRecord(formData: FormData) {
       balance: bank.balance + factor * Number(formData.get('amount')),
     },
   });
-  // }
 
   // update budget balance
   if (type === RecordType.expense) {
@@ -73,5 +80,7 @@ export async function createNewRecord(formData: FormData) {
 
   revalidatePath('/money-track');
 
-  redirect('/money-track');
+  return {
+    data: newRecord,
+  };
 }
