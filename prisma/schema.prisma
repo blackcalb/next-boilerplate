@@ -37,9 +37,9 @@ model Categories {
 
 model Records {
   id         String        @id @default(auto()) @map("_id") @db.ObjectId
-  accountId  String        @db.ObjectId
+  accountId  String?       @db.ObjectId
   amount     RecordsAmount
-  categoryId String        @db.ObjectId
+  categoryId String?       @db.ObjectId
   date       DateTime      @db.Date
   subject    String
   type       String

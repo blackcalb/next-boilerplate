@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -34,14 +36,27 @@ export default function CreateNewRecord({
       <input type="hidden" name="redirect" value="/money-track" />
       <label htmlFor="subject">
         Subject
-        <input type="text" id="subject" name="subject" />
+        <input type="text" id="subject" name="subject" required />
       </label>
+      {state?.error?.subject && <p>{state.error.subject._errors.join(', ')}</p>}
       <label htmlFor="amount">
-        amount <input type="text" id="amount" name="amount" />
+        amount{' '}
+        <input
+          type="number"
+          min={0}
+          step={0.01}
+          id="amount"
+          name="amount"
+          required
+        />
       </label>
+      {state?.error?.amount && <p>{state.error.amount._errors.join(', ')}</p>}
+      {state?.error?.amount && (
+        <p>{state.error.amount.value?._errors.join(', ')}</p>
+      )}
       <label htmlFor="category">
         Category
-        <select name="category" id="category">
+        <select name="category" id="category" required>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -49,8 +64,11 @@ export default function CreateNewRecord({
           ))}
         </select>
       </label>
+      {state?.error?.categoryId && (
+        <p>{state.error.categoryId._errors.join(', ')}</p>
+      )}
       <label htmlFor="account">
-        <select name="account" id="account">
+        <select name="account" id="account" required>
           {bankAccounts.map((account) => (
             <option key={account.id} value={account.id}>
               {account.name}
@@ -58,10 +76,14 @@ export default function CreateNewRecord({
           ))}
         </select>
       </label>
+      {state?.error?.accountId && (
+        <p>{state.error.accountId._errors.join(', ')}</p>
+      )}
       <label htmlFor="date">
         Date
-        <input type="date" id="date" name="date" />
+        <input type="date" id="date" name="date" required />
       </label>
+      {state?.error?.date && <p>{state.error.date._errors.join(', ')}</p>}
       <FormButton>Crear</FormButton>
     </form>
   );

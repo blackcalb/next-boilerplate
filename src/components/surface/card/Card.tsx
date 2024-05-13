@@ -6,9 +6,10 @@ import { cn } from '@/utils/cn';
 interface CardProps {
   children: React.ReactNode;
   title: string;
+  className?: string;
 }
 
-export function Card({ children, title }: Readonly<CardProps>) {
+export function Card({ children, title, className }: Readonly<CardProps>) {
   return (
     <div
       className={cn(
@@ -18,6 +19,7 @@ export function Card({ children, title }: Readonly<CardProps>) {
         'px-6 py-4',
         'bg-blue-100/10 backdrop-blur-sm',
         'shadow-lg',
+        className,
       )}
     >
       <div className="mb-6 flex w-full justify-center">

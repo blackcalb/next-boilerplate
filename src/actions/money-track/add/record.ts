@@ -6,6 +6,80 @@ import { revalidatePath } from 'next/cache';
 import { AddRecordSchema } from '@/schemas/money-track/records';
 import { RecordType } from '@/types/moneyTrack';
 
+function getDataFromFormData(formData: FormData, currency: string) {
+  return {
+    type: formData.get('type') as string,
+    subject: formData.get('subject') as string,
+    amount: {
+      value: Number(formData.get('amount')),
+      currency,
+    },
+    accountId: formData.get('account') as string,
+    categoryId: formData.get('category') as string,
+    date: new Date(formData.get('date') as string),
+  };
+}
+
+async function updateBalanceAccount(
+  bankId: string,
+  transactionType: RecordType,
+  amount: number,
+) {
+  const prisma = new Prisma.PrismaClient();
+
+  const bank = await prisma.accounts.findUnique({
+    where: { id: bankId },
+  });
+
+  if (!bank) throw new Error('Bank account not found ');
+
+  const factor = transactionType === RecordType.income ? 1 : -1;
+  await prisma.accounts.update({
+    where: {
+      id: bank.id,
+    },
+    data: {
+      balance: bank.balance + factor * amount,
+    },
+  });
+}
+
+async function updateBudgetUsedAmount(
+  categoryId: string,
+  transactionType: RecordType,
+  amount: number,
+  date: Date,
+) {
+  if (transactionType === RecordType.income) return;
+
+  const prisma = new Prisma.PrismaClient();
+
+  const budget = await prisma.budgets.findFirst({
+    where: {
+      categoryIds: {
+        has: categoryId,
+      },
+      to: {
+        gte: date,
+      },
+      from: {
+        lte: date,
+      },
+    },
+  });
+
+  if (budget) {
+    await prisma.budgets.update({
+      where: {
+        id: budget.id,
+      },
+      data: {
+        used: budget.used + amount,
+      },
+    });
+  }
+}
+
 export async function createNewRecord(_: any, formData: FormData) {
   const prisma = new Prisma.PrismaClient();
 
@@ -15,19 +89,7 @@ export async function createNewRecord(_: any, formData: FormData) {
 
   if (!bank) throw new Error('Bank account not found ');
 
-  const type = formData.get('type') as RecordType;
-
-  const data = {
-    type: formData.get('type') as string,
-    subject: formData.get('subject') as string,
-    amount: {
-      value: Number(formData.get('amount')),
-      currency: bank.currency,
-    },
-    accountId: bank.id,
-    categoryId: formData.get('category') as string,
-    date: new Date(formData.get('date') as string),
-  };
+  const data = getDataFromFormData(formData, bank.currency);
 
   const isValid = AddRecordSchema.safeParse(data);
 
@@ -40,43 +102,18 @@ export async function createNewRecord(_: any, formData: FormData) {
   const newRecord = await prisma.records.create({ data });
 
   // update account balance
-  const factor = type === RecordType.income ? 1 : -1;
-  await prisma.accounts.update({
-    where: {
-      id: bank.id,
-    },
-    data: {
-      balance: bank.balance + factor * Number(formData.get('amount')),
-    },
-  });
+  await updateBalanceAccount(
+    data.accountId,
+    data.type as RecordType,
+    data.amount.value,
+  );
 
-  // update budget balance
-  if (type === RecordType.expense) {
-    const budget = await prisma.budgets.findFirst({
-      where: {
-        categoryIds: {
-          has: formData.get('category') as string,
-        },
-        to: {
-          gte: new Date(formData.get('date') as string),
-        },
-        from: {
-          lte: new Date(formData.get('date') as string),
-        },
-      },
-    });
-
-    if (budget) {
-      await prisma.budgets.update({
-        where: {
-          id: budget.id,
-        },
-        data: {
-          used: budget.used + Number(formData.get('amount')),
-        },
-      });
-    }
-  }
+  await updateBudgetUsedAmount(
+    data.categoryId,
+    data.type as RecordType,
+    data.amount.value,
+    data.date,
+  );
 
   revalidatePath('/money-track');
 

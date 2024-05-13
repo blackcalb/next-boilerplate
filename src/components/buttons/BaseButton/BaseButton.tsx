@@ -16,7 +16,7 @@ export const BaseButton = ({
     <button
       {...props}
       type={type}
-      className="inline-block rounded-md p-2 hover:cursor-grab hover:bg-gray-200 active:cursor-grabbing dark:hover:bg-gray-800"
+      className="inline-block rounded-md p-2  hover:bg-gray-200 dark:hover:bg-gray-800"
     >
       {children}
     </button>
