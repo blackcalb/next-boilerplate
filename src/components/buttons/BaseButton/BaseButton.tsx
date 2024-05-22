@@ -1,23 +1,66 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
 
+import { cn } from '@/utils/cn';
+
+const getTextColor = (color: BaseButtonProps['color']) => {
+  switch (color) {
+    case 'primary':
+      return 'text-primary';
+    case 'secondary':
+      return 'text-secondary';
+    case 'error':
+      return 'text-error';
+    case 'success':
+      return 'text-success';
+    case 'warning':
+      return 'text-warning';
+    case 'info':
+      return 'text-info';
+    case 'light':
+      return 'text-light';
+    case 'dark':
+      return 'text-dark';
+    default:
+      return '';
+  }
+};
 interface BaseButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label?: string;
   type: NonNullable<React.ButtonHTMLAttributes<HTMLButtonElement>['type']>;
+  iconStart?: React.ReactNode;
+  children?: React.ReactNode;
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'error'
+    | 'success'
+    | 'warning'
+    | 'info'
+    | 'light'
+    | 'dark';
 }
 export const BaseButton = ({
-  label,
   type,
+  children,
+  color,
   ...props
 }: Readonly<BaseButtonProps>) => {
+  const textColor = getTextColor(color);
+  console.log('🚀 ~ textColor:', textColor);
+
   return (
     <button
       {...props}
       type={type}
-      className="inline-block rounded-md p-2 hover:cursor-grab hover:bg-gray-200 active:cursor-grabbing dark:hover:bg-gray-800"
+      className={cn(
+        'inline-block p-2',
+        'rounded-md',
+        'hover:bg-gray-200 dark:hover:bg-gray-800',
+        textColor,
+      )}
     >
-      {label}
+      {children}
     </button>
   );
 };
