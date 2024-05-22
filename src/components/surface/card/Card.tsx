@@ -23,7 +23,9 @@ export function Card({ children, title, className }: Readonly<CardProps>) {
       )}
     >
       <div className="mb-6 flex w-full justify-center">
-        <Text variant="h3">{title}</Text>
+        <Text variant="h3" className="font-bold">
+          {title}
+        </Text>
       </div>
       {children}
     </div>
