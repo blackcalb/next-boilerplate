@@ -64,4 +64,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   session: {
     strategy: 'jwt',
   },
+  experimental: {
+    enableWebAuthn: true,
+  },
+  debug: true,
 });
