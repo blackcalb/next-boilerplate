@@ -26,14 +26,14 @@ export default function CreateNewRecord({
 
   useEffect(() => {
     if (state?.data) {
-      router.push('/money-track');
+      router.push('/money-track/dashboard');
     }
   }, [router, state?.data]);
 
   return (
     <form className="flex flex-col" action={formAction}>
       <input type="hidden" name="type" value={type} />
-      <input type="hidden" name="redirect" value="/money-track" />
+      <input type="hidden" name="redirect" value="/money-track/dashboard" />
       <label htmlFor="subject">
         Subject
         <input type="text" id="subject" name="subject" required />

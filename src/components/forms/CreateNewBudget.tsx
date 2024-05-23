@@ -20,7 +20,7 @@ export default function CreateNewBudget({
 
   useEffect(() => {
     if (state?.data) {
-      router.push('/money-track');
+      router.push('/money-track/dashboard');
     }
   }, [router, state?.data]);
 

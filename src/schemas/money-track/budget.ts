@@ -7,4 +7,5 @@ export const AddBudgetSchema = z.object({
   categoryIds: z.array(z.string().min(1)).min(1),
   budget: z.number().nonnegative(),
   addPreviousCreatedRecords: z.boolean().optional(),
+  userId: z.string().length(24),
 });

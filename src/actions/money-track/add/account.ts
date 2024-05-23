@@ -3,13 +3,17 @@
 import Prisma from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
+import getUserId from '@/actions/auth/getUserId';
 import { AddAccountSchema } from '@/schemas/money-track/account';
 
 export async function createNewAccount(_: any, formData: FormData) {
+  const userId = await getUserId();
+
   const data = {
     name: formData.get('name') as string,
     currency: formData.get('currency') as string,
     balance: Number(formData.get('initialBalance') ?? 0),
+    userId,
   };
 
   const isValid = AddAccountSchema.safeParse(data);
@@ -32,11 +36,12 @@ export async function createNewAccount(_: any, formData: FormData) {
         type: 'deposit',
         date: new Date(),
         subject: `Initial Balance - ${data.name}`,
+        userId,
       },
     });
   }
 
-  revalidatePath('/money-track');
+  revalidatePath('/money-track/dashboard');
 
   return { data: newAccount };
 }

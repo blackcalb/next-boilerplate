@@ -3,9 +3,12 @@
 import Prisma from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
+import getUserId from '@/actions/auth/getUserId';
 import { AddBudgetSchema } from '@/schemas/money-track/budget';
 
 export async function createNewBudget(_: any, formData: FormData) {
+  const userId = await getUserId();
+
   const data = {
     name: formData.get('name') as string,
     from: new Date(formData.get('from') as string),
@@ -13,6 +16,7 @@ export async function createNewBudget(_: any, formData: FormData) {
     categoryIds: (formData.getAll('category') as string[]) ?? [],
     budget: Number(formData.get('budget')),
     used: 0,
+    userId,
   };
 
   const isValid = AddBudgetSchema.safeParse(data);
@@ -36,6 +40,8 @@ export async function createNewBudget(_: any, formData: FormData) {
           gte: data.from,
           lte: data.to,
         },
+        userId,
+        type: 'expense',
       },
     });
 
@@ -44,7 +50,7 @@ export async function createNewBudget(_: any, formData: FormData) {
 
   const newBudget = await prisma.budgets.create({ data });
 
-  revalidatePath('/money-track');
+  revalidatePath('/money-track/dashboard');
 
   return { data: newBudget };
 }

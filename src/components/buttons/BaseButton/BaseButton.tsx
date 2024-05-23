@@ -47,7 +47,6 @@ export const BaseButton = ({
   ...props
 }: Readonly<BaseButtonProps>) => {
   const textColor = getTextColor(color);
-  console.log('🚀 ~ textColor:', textColor);
 
   return (
     <button

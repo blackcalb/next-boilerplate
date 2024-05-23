@@ -10,4 +10,5 @@ export const AddRecordSchema = z.object({
     currency: z.string(),
     value: z.number().positive(),
   }),
+  userId: z.string().length(24),
 });

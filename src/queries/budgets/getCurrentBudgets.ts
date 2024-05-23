@@ -1,7 +1,10 @@
 import Prisma from '@prisma/client';
 
+import getUserId from '@/actions/auth/getUserId';
+
 export async function getCurrentBudgets() {
   const prisma = new Prisma.PrismaClient();
+  const userId = await getUserId();
 
   return prisma.budgets.findMany({
     orderBy: {
@@ -18,6 +21,9 @@ export async function getCurrentBudgets() {
           to: {
             gte: new Date(),
           },
+        },
+        {
+          userId,
         },
       ],
     },

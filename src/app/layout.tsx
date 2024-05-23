@@ -7,6 +7,7 @@ import { ThemeProvider } from 'next-themes';
 
 import { MenuWrapper } from '@/components/menu/Menu';
 import { Navigation } from '@/components/navigation';
+import Sidemenu from '@/components/ui/menu/Sidemenu';
 import { MenuProvider } from '@/hooks/context/menu';
 import { cn } from '@/utils/cn';
 
@@ -36,7 +37,9 @@ export default function RootLayout({
             <Navigation />
 
             <div className="flex flex-1">
-              <MenuWrapper>title</MenuWrapper>
+              <MenuWrapper>
+                <Sidemenu />
+              </MenuWrapper>
               {children}
             </div>
           </MenuProvider>

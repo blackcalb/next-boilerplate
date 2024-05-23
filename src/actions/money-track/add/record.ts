@@ -3,10 +3,15 @@
 import Prisma from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
+import getUserId from '@/actions/auth/getUserId';
 import { AddRecordSchema } from '@/schemas/money-track/records';
 import { RecordType } from '@/types/moneyTrack';
 
-function getDataFromFormData(formData: FormData, currency: string) {
+function getDataFromFormData(
+  formData: FormData,
+  currency: string,
+  userId: string,
+) {
   return {
     type: formData.get('type') as string,
     subject: formData.get('subject') as string,
@@ -17,6 +22,7 @@ function getDataFromFormData(formData: FormData, currency: string) {
     accountId: formData.get('account') as string,
     categoryId: formData.get('category') as string,
     date: new Date(formData.get('date') as string),
+    userId,
   };
 }
 
@@ -83,13 +89,15 @@ async function updateBudgetUsedAmount(
 export async function createNewRecord(_: any, formData: FormData) {
   const prisma = new Prisma.PrismaClient();
 
+  const userId = await getUserId();
+
   const bank = await prisma.accounts.findUnique({
     where: { id: formData.get('account') as string },
   });
 
   if (!bank) throw new Error('Bank account not found ');
 
-  const data = getDataFromFormData(formData, bank.currency);
+  const data = getDataFromFormData(formData, bank.currency, userId);
 
   const isValid = AddRecordSchema.safeParse(data);
 
@@ -115,7 +123,7 @@ export async function createNewRecord(_: any, formData: FormData) {
     data.date,
   );
 
-  revalidatePath('/money-track');
+  revalidatePath('/money-track/dashboard');
 
   return {
     data: newRecord,

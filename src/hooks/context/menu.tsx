@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useCallback, useContext, useMemo } from 'react';
 
 interface MenuContextType {
   isMenuOpen: boolean;
@@ -24,9 +24,12 @@ export function MenuProvider({
 }>) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
 
-  const value = useMemo(() => ({ isMenuOpen, toggleMenu }), [isMenuOpen]);
+  const value = useMemo(
+    () => ({ isMenuOpen, toggleMenu }),
+    [isMenuOpen, toggleMenu],
+  );
 
   return <MenuCtx.Provider value={value}>{children}</MenuCtx.Provider>;
 }

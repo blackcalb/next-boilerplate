@@ -2,11 +2,11 @@
 /* eslint-disable import/no-mutable-exports */
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
-if (!process.env.DB_NAME || !process.env.DB_USER || !process.env.DB_PSWD) {
-  throw new Error('Invalid/Missing environment variable: "DB_*"');
+if (!process.env.DATABASE_URL) {
+  throw new Error('Invalid/Missing environment variable: "DATABASE_URL"');
 }
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PSWD}@playground.occeeja.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=playground`;
+const uri = process.env.DATABASE_URL;
 const options = {
   serverApi: {
     version: ServerApiVersion.v1,
