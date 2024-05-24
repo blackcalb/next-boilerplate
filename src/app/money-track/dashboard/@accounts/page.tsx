@@ -23,7 +23,7 @@ export default async function BankPage() {
 
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-between">
-      <div className="grid w-full grid-cols-3 gap-10">
+      <div className="grid w-full grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
         {accounts.map((account) => (
           <AccountCard key={account.id} account={account} />
         ))}

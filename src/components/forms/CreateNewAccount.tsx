@@ -30,6 +30,7 @@ export default function CreateNewAccount() {
           type="number"
           name="initialBalance"
           id="initialBalance"
+          step="0.01"
         />
         <Select
           label="Currency"
