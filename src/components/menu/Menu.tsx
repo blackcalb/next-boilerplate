@@ -12,7 +12,7 @@ export const MenuWrapper = ({
   return (
     <MenuProvider>
       <motion.div
-        className="flex flex-col"
+        className="flex size-full flex-col"
         animate={isMenuOpen ? 'open' : 'closed'}
         initial={{
           x: '-200px',
@@ -23,7 +23,7 @@ export const MenuWrapper = ({
           open: { x: 0, width: '200px' },
         }}
       >
-        <div className="px-4 pt-10">{children}</div>
+        <div className="size-full px-4 pt-10">{children}</div>
       </motion.div>
     </MenuProvider>
   );

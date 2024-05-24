@@ -13,7 +13,6 @@ export function Card({ children, title, className }: Readonly<CardProps>) {
   return (
     <div
       className={cn(
-        'size-full',
         'border-2 border-solid border-blue-200',
         'rounded-lg',
         'px-6 py-4',

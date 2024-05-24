@@ -3,11 +3,17 @@
 import React from 'react';
 import { useFormState } from 'react-dom';
 
-import { authenticate, authenticateGithubAction } from '@/auth/actions';
+import {
+  authenticateCredentialAction,
+  authenticateGithubAction,
+} from '@/auth/actions';
 import FormButton from '@/components/buttons/FormButton';
 
 export const LoginForm = () => {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const [errorMessage, dispatch] = useFormState(
+    authenticateCredentialAction,
+    undefined,
+  );
   return (
     <div>
       <form action={dispatch} className="space-y-3">

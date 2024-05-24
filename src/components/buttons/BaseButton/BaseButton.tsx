@@ -3,63 +3,125 @@ import React from 'react';
 
 import { cn } from '@/utils/cn';
 
-const getTextColor = (color: BaseButtonProps['color']) => {
-  switch (color) {
-    case 'primary':
-      return 'text-primary';
-    case 'secondary':
-      return 'text-secondary';
-    case 'error':
-      return 'text-error';
-    case 'success':
-      return 'text-success';
-    case 'warning':
-      return 'text-warning';
-    case 'info':
-      return 'text-info';
-    case 'light':
-      return 'text-light';
-    case 'dark':
-      return 'text-dark';
+const borderByColor: Record<ButtonColors, string> = {
+  primary: 'border-primary',
+  secondary: 'border-secondary',
+  error: 'border-error',
+  success: 'border-success',
+  warning: 'border-warning',
+  info: 'border-info',
+  light: 'border-light',
+  dark: 'border-dark',
+};
+
+function getBorderColor(color: ButtonColors, kind: BaseButtonProps['kind']) {
+  switch (kind) {
+    case 'text':
+    case 'contained':
+      return 'border-transparent';
+    case 'outlined':
+      return borderByColor[color];
+    default:
+      return '';
+  }
+}
+
+const backgroundByColor: Record<ButtonColors, string> = {
+  primary: 'bg-primary hover:bg-primary/90',
+  secondary: 'bg-secondary',
+  error: 'bg-error',
+  success: 'bg-success',
+  warning: 'bg-warning',
+  info: 'bg-info',
+  light: 'bg-light',
+  dark: 'bg-dark',
+};
+
+const getBackgroundColor = (
+  color: ButtonColors,
+  kind: BaseButtonProps['kind'],
+) => {
+  switch (kind) {
+    case 'text':
+    case 'outlined':
+      return 'bg-transparent';
+    case 'contained':
+      return backgroundByColor[color];
     default:
       return '';
   }
 };
-interface BaseButtonProps
+const textByColor: Record<ButtonColors, string> = {
+  primary: 'text-primary',
+  secondary: 'text-secondary',
+  error: 'text-error',
+  success: 'text-success',
+  warning: 'text-warning',
+  info: 'text-info',
+  light: 'text-light',
+  dark: 'text-dark',
+};
+
+const getColor = (color: ButtonColors, kind: BaseButtonProps['kind']) => {
+  switch (kind) {
+    case 'text':
+    case 'outlined':
+      return textByColor[color];
+    case 'contained':
+      return `text-white dark:text-gray-900`;
+    default:
+      return '';
+  }
+};
+
+type ButtonColors =
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'success'
+  | 'warning'
+  | 'info'
+  | 'light'
+  | 'dark';
+
+export interface BaseButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   type: NonNullable<React.ButtonHTMLAttributes<HTMLButtonElement>['type']>;
-  iconStart?: React.ReactNode;
   children?: React.ReactNode;
-  color?:
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'success'
-    | 'warning'
-    | 'info'
-    | 'light'
-    | 'dark';
+  className?: string;
+  color?: ButtonColors;
+  iconEnd?: React.ReactNode;
+  iconStart?: React.ReactNode;
+  kind?: 'text' | 'outlined' | 'contained';
 }
 export const BaseButton = ({
   type,
   children,
-  color,
+  className,
+  iconStart,
+  iconEnd,
+  color = 'primary',
+  kind = 'text',
   ...props
 }: Readonly<BaseButtonProps>) => {
-  const textColor = getTextColor(color);
-
   return (
     <button
       {...props}
       type={type}
       className={cn(
-        'inline-block p-2',
+        'inline-block',
         'rounded-md',
-        'hover:bg-gray-200 dark:hover:bg-gray-800',
-        textColor,
+        getBorderColor(color, kind),
+        'border-2 border-solid',
+        getColor(color, kind),
+        `hover:${getBackgroundColor(color, kind)}/80 hover:scale-110 transition-all`,
+        getBackgroundColor(color, kind),
+        className,
       )}
     >
+      {iconStart}
       {children}
+      {iconEnd}
     </button>
   );
 };
