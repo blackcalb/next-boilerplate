@@ -5,8 +5,10 @@ import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
 import { createNewAccount } from '@/actions/money-track/add/account';
+import Input from '@/components/inputs/input';
 
 import FormButton from '../buttons/FormButton';
+import Select from '../inputs/select';
 
 export default function CreateNewAccount() {
   const [state, formAction] = useFormState(createNewAccount, null);
@@ -20,23 +22,31 @@ export default function CreateNewAccount() {
 
   return (
     <form action={formAction}>
-      <label htmlFor="name">
-        Name
-        <input type="text" id="name" name="name" required />
-      </label>
+      <div className="flex w-full flex-col gap-4">
+        <Input label="Name" type="text" name="name" id="name" />
 
-      <select name="currency" id="currency" required>
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-        <option value="GBP">GBP</option>
-        <option value="JPY">JPY</option>
-      </select>
+        <Input
+          label="Initial balance"
+          type="number"
+          name="initialBalance"
+          id="initialBalance"
+        />
+        <Select
+          label="Currency"
+          id="currency"
+          name="currency"
+          options={[
+            { value: 'EUR', label: 'EUR' },
+            { value: 'USD', label: 'USD' },
+            { value: 'GBP', label: 'GBP' },
+            { value: 'JPY', label: 'JPY' },
+          ]}
+        />
 
-      <label htmlFor="initialBalance">
-        Initial Balance
-        <input type="number" id="initialBalance" name="initialBalance" />
-      </label>
-      <FormButton>Create New Account</FormButton>
+        <FormButton kind="contained" className="self-center p-2">
+          Create New Account
+        </FormButton>
+      </div>
     </form>
   );
 }

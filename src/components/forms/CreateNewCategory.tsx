@@ -5,8 +5,10 @@ import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
 import { createNewCategory } from '@/actions/money-track/add/category';
+import FormButton from '@/components/buttons/FormButton';
+import Input from '@/components/inputs/input';
 
-import FormButton from '../buttons/FormButton';
+import Select from '../inputs/select';
 
 export default function CreateNewCategory() {
   const [state, formAction] = useFormState(createNewCategory, null);
@@ -20,18 +22,29 @@ export default function CreateNewCategory() {
 
   return (
     <form action={formAction}>
-      <label htmlFor="name">
-        Name
-        <input type="text" id="name" name="name" required />
-      </label>
-      <label htmlFor="type">
-        Type
-        <select name="type" id="type" required>
-          <option value="expense">Expense</option>
-          <option value="income">Income</option>
-        </select>
-      </label>
-      <FormButton>Create Category</FormButton>
+      <div className="flex w-full flex-col gap-4">
+        <Input label="Name" type="text" name="name" id="name" />
+
+        <Select
+          label="Type"
+          id="type"
+          name="type"
+          options={[
+            {
+              value: 'expense',
+              label: 'Expense',
+            },
+            {
+              value: 'income',
+              label: 'Income',
+            },
+          ]}
+        />
+
+        <FormButton className="self-center p-2" kind="contained">
+          Create Category
+        </FormButton>
+      </div>
     </form>
   );
 }
