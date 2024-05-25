@@ -15,9 +15,7 @@ export default async function IncomesPage() {
       )}
       {incomes.map((income) => (
         <Fragment key={income.id}>
-          <Text variant="h5" className="col-span-2">
-            {income.subject}
-          </Text>
+          <Text className="col-span-2 text-2xl">{income.subject}</Text>
           <Text variant="p">
             {income.amount.currency} {income.amount.value}
           </Text>

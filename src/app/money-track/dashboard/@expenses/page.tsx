@@ -19,7 +19,7 @@ export default async function ExpensesPage() {
             {income.subject}
           </Text>
           <Text variant="p">
-            {income.amount.currency} {income.amount.value}
+            {income.amount.currency} {-1 * income.amount.value}
           </Text>
           <Text variant="p">{Intl.DateTimeFormat().format(income.date)}</Text>
         </Fragment>

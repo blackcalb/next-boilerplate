@@ -8,7 +8,7 @@ export const AddRecordSchema = z.object({
   type: z.enum(['income', 'expense']),
   amount: z.object({
     currency: z.string(),
-    value: z.number().positive(),
+    value: z.number(),
   }),
   userId: z.string().length(24),
 });

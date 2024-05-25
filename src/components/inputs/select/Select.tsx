@@ -8,6 +8,8 @@ interface SelectOption {
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   options: SelectOption[];
+  id: string;
+  errors?: string[];
 }
 
 export function Select({
@@ -15,18 +17,28 @@ export function Select({
   id,
   label,
   options,
+  errors,
   ...props
 }: Readonly<SelectProps>) {
   return (
-    <label htmlFor={id}>
-      {label}
-      <select id={id} className={cn('p-4 w-full', className)} {...props}>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
+    <>
+      <label htmlFor={id}>
+        {label}
+        <select id={id} className={cn('p-4 w-full', className)} {...props}>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <div>
+        {errors?.map((error) => (
+          <p key={error} className="text-red-500">
+            {error}
+          </p>
         ))}
-      </select>
-    </label>
+      </div>
+    </>
   );
 }

@@ -12,11 +12,12 @@ function getDataFromFormData(
   currency: string,
   userId: string,
 ) {
+  const factor = formData.get('type') === RecordType.income ? 1 : -1;
   return {
     type: formData.get('type') as string,
     subject: formData.get('subject') as string,
     amount: {
-      value: Number(formData.get('amount')),
+      value: factor * Number(formData.get('amount')),
       currency,
     },
     accountId: formData.get('account') as string,
@@ -26,11 +27,7 @@ function getDataFromFormData(
   };
 }
 
-async function updateBalanceAccount(
-  bankId: string,
-  transactionType: RecordType,
-  amount: number,
-) {
+async function updateBalanceAccount(bankId: string, amount: number) {
   const prisma = new Prisma.PrismaClient();
 
   const bank = await prisma.accounts.findUnique({
@@ -39,13 +36,12 @@ async function updateBalanceAccount(
 
   if (!bank) throw new Error('Bank account not found ');
 
-  const factor = transactionType === RecordType.income ? 1 : -1;
   await prisma.accounts.update({
     where: {
       id: bank.id,
     },
     data: {
-      balance: bank.balance + factor * amount,
+      balance: bank.balance + amount,
     },
   });
 }
@@ -110,11 +106,7 @@ export async function createNewRecord(_: any, formData: FormData) {
   const newRecord = await prisma.records.create({ data });
 
   // update account balance
-  await updateBalanceAccount(
-    data.accountId,
-    data.type as RecordType,
-    data.amount.value,
-  );
+  await updateBalanceAccount(data.accountId, data.amount.value);
 
   await updateBudgetUsedAmount(
     data.categoryId,

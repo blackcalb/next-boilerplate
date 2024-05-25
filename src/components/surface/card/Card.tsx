@@ -5,11 +5,17 @@ import { cn } from '@/utils/cn';
 
 interface CardProps {
   children: React.ReactNode;
-  title: string;
+  title?: string;
+  header?: React.ReactNode;
   className?: string;
 }
 
-export function Card({ children, title, className }: Readonly<CardProps>) {
+export function Card({
+  children,
+  title,
+  header,
+  className,
+}: Readonly<CardProps>) {
   return (
     <div
       className={cn(
@@ -22,6 +28,7 @@ export function Card({ children, title, className }: Readonly<CardProps>) {
       )}
     >
       <div className="mb-6 flex w-full justify-center">
+        {header}
         <Text variant="h3" className="font-bold">
           {title}
         </Text>
