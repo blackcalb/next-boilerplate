@@ -1,8 +1,6 @@
-import { faMoneyCheckAlt, faShuffle } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
 
-import BaseButton from '@/components/buttons/BaseButton';
 import getAccounts from '@/queries/accounts/getBanks';
 import type { Account } from '@/types/moneyTrack';
 
@@ -22,18 +20,10 @@ export default async function BankPage() {
   const accounts = await getAccounts();
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center justify-between">
-      <Link href="/money-track/accounts/transfer-between-accounts">
-        <FontAwesomeIcon icon={faShuffle} size="2x" />
-      </Link>
-      <div className="grid w-full grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
-        {accounts.map((account) => (
-          <AccountCard key={account.id} account={account} />
-        ))}
-      </div>
-      <Link href="/money-track/add/account">
-        <BaseButton type="button">Add a New Account</BaseButton>
-      </Link>
+    <div className="grid w-full grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
+      {accounts.map((account) => (
+        <AccountCard key={account.id} account={account} />
+      ))}
     </div>
   );
 }
