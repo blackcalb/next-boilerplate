@@ -6,5 +6,5 @@ export default async function getAccount(id: string) {
   await dbConnect();
   const userId = await getUserId();
 
-  return BankAccount.findOne({ _id: id, userId });
+  return BankAccount.findOne({ _id: id, userId }, undefined, { lean: true });
 }

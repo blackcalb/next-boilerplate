@@ -6,6 +6,7 @@ import {
   BarChart,
   Legend,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
@@ -19,16 +20,12 @@ interface AccountSummaryProps {
 
 export function AccountSummary({ accountId }: Readonly<AccountSummaryProps>) {
   const [selectedView, setSelectedView] = useState(0);
-  const { data, isLoading, isError } = useGetAccountMovements(
-    accountId,
-    selectedView,
-  );
-  console.log('🚀 ~ AccountSummary ~ data:', data, isError, isLoading);
+  const { data } = useGetAccountMovements(accountId, selectedView);
 
   return (
     <div className="mx-auto ">
       <Select
-        className="mx-auto w-1/3"
+        className="mx-auto w-1/2"
         id="view"
         label=""
         value={selectedView}
@@ -39,34 +36,26 @@ export function AccountSummary({ accountId }: Readonly<AccountSummaryProps>) {
             value: 0,
           },
           {
-            label: 'Last month',
+            label: 'Last two month',
             value: 1,
+          },
+          {
+            label: 'Last three month',
+            value: 2,
           },
         ]}
       />
-      <div className="mx-auto mt-6 aspect-square h-80">
+      <div className="mx-auto mt-6 aspect-square h-96">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            width={500}
-            height={300}
-            data={[
-              {
-                name: 'Current month',
-                income: 100,
-                expenses: 40,
-                'transfer-in': 10,
-                'transfer-out': 10,
-              },
-            ]}
-            maxBarSize={25}
-          >
+          <BarChart width={600} height={300} data={data ?? []} maxBarSize={25}>
             <XAxis dataKey="name" />
             <YAxis />
             <Legend />
-            <Bar dataKey="income" fill="#8884d8" stackId={2} />
+            <Tooltip cursor={{ fill: 'transparent' }} />
+            <Bar dataKey="deposit" fill="#23d031" stackId={2} />
             <Bar dataKey="transfer-in" fill="#d02390" stackId={2} />
-            <Bar dataKey="expenses" fill="#82ca9d" stackId={1} />
-            <Bar dataKey="transfer-out" fill="#d1d42a" stackId={1} />
+            <Bar dataKey="expense" fill="#ee9949" stackId={1} />
+            <Bar dataKey="transfer-out" fill="#bba11e" stackId={1} />
           </BarChart>
         </ResponsiveContainer>
       </div>

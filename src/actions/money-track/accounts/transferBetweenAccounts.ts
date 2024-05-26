@@ -6,6 +6,7 @@ import { z } from 'zod';
 import getUserId from '@/actions/auth/getUserId';
 import dbConnect from '@/lib/mongoose';
 import BankAccount from '@/models/money-track/BankAcounts';
+import { CategoryType } from '@/models/money-track/Categories';
 import Movement from '@/models/money-track/Movemets';
 
 const transferBetweenAccountsSchema = z.object({
@@ -64,7 +65,7 @@ export async function transferBetweenAccountAction(_: any, formData: FormData) {
         name: `Transfer to ${toAccount.name}`,
         amount: -data.amount,
         currency: fromAccount.currency,
-        type: 'transfer',
+        type: CategoryType.TransferOut,
         userId,
       },
       {
@@ -73,7 +74,7 @@ export async function transferBetweenAccountAction(_: any, formData: FormData) {
         name: `Transfer from ${fromAccount.name}`,
         amount: data.amount,
         currency: fromAccount.currency,
-        type: 'transfer',
+        type: CategoryType.TransferIn,
         userId,
       },
     ]),

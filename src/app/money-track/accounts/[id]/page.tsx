@@ -4,6 +4,7 @@ import getAccount from '@/actions/money-track/accounts/getAccount';
 import ContentWrapper from '@/components/surface/content-wrapper';
 import Text from '@/components/Text';
 
+import { AccountDescription } from './AccountDescription';
 import { AccountSummary } from './AccountSummary';
 
 export default async function AccountDetailPage({
@@ -19,24 +20,27 @@ export default async function AccountDetailPage({
 
   return (
     <ContentWrapper>
-      <div className="mt-16">
+      <div className="mt-16 flex flex-col gap-4">
         <Text variant="h1" className="text-center capitalize">
           {account?.name}
         </Text>
+        <AccountDescription
+          description={account.description}
+          accountId={account._id.toString()}
+        />
 
         <Text variant="h2" className="mb-6">
           Summary
         </Text>
         <div className="pl-6">
-          <Text>
+          <Text className="mb-6">
             Balance:{' '}
             {new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: 'EUR',
             }).format(account?.balance)}
           </Text>
-          <AccountSummary accountId={account.id} />
-          total income total expenses transfers to another accounts
+          <AccountSummary accountId={account._id.toString()} />
         </div>
       </div>
     </ContentWrapper>

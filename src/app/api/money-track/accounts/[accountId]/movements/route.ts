@@ -3,6 +3,8 @@ import type { NextRequest } from 'next/server';
 import getUserId from '@/actions/auth/getUserId';
 import dbConnect from '@/lib/mongoose';
 import BankAccount from '@/models/money-track/BankAcounts';
+import type { CategoryType } from '@/models/money-track/Categories';
+import Movement from '@/models/money-track/Movemets';
 
 export async function GET(
   req: NextRequest,
@@ -28,42 +30,78 @@ export async function GET(
   }
 
   await dbConnect();
-  const account = await BankAccount.findById(params.accountId);
+  const bankAccount = await BankAccount.findById(params.accountId);
 
-  if (!account) {
+  if (!bankAccount) {
     return new Response(JSON.stringify({ message: 'Account not found' }), {
       status: 404,
     });
   }
 
-  if (account.userId.toString() !== userId) {
+  if (bankAccount.userId.toString() !== userId) {
     return new Response(JSON.stringify({ message: 'Forbidden' }), {
       status: 403,
     });
   }
 
-  await BankAccount.create({
-    name: 'My Account',
-    balance: 0,
-    currency: 'USD',
-    userId,
-  });
-  const banks = await BankAccount.find({ userId });
-  console.log('🚀 ~ banks:', banks);
-
   // get all records from the account from first day of the month until last day of the month
-  // const now = new Date();
-  // const start = new Date(now.getFullYear(), now.getMonth(), 1);
-  // const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const now = new Date();
+  // start is a Date from first day of period month ago
+  const start = new Date(now.getFullYear(), now.getMonth() - period, 1);
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
-  // // query from records where date is between start and end and agrupate by type
+  // query that get the total amount by type, for each diferent month/yr
 
-  // console.log('🚀 ~ movements:', movements);
-
-  return new Response(
-    JSON.stringify({ message: `Hello from Next.js! ${userId}` }),
+  const movements: {
+    _id: {
+      month: number;
+      year: number;
+      type: CategoryType;
+    };
+    total: number;
+  }[] = await Movement.aggregate([
     {
-      status: 200,
+      $match: {
+        accountId: bankAccount._id,
+        date: { $gte: start, $lte: end },
+      },
     },
-  );
+    {
+      $project: {
+        month: { $month: '$date' },
+        year: { $year: '$date' },
+        type: 1,
+        amount: 1,
+      },
+    },
+    {
+      $group: {
+        _id: { month: '$month', year: '$year', type: '$type' },
+        total: { $sum: { $abs: '$amount' } },
+      },
+    },
+  ]);
+
+  const response = movements
+    .map((item) => ({
+      name: `${item._id.year}-${item._id.month}`,
+      [item._id.type]: item.total,
+    }))
+    .reduce(
+      (acc, curr) => {
+        if (acc.find((item) => item.name === curr.name)) {
+          return acc.map((item) =>
+            item.name === curr.name ? { ...item, ...curr } : item,
+          );
+        }
+        return [...acc, curr];
+      },
+      [] as ({ name: string } & Partial<Record<CategoryType, number>>)[],
+    );
+
+  response.sort((a, b) => a.name.localeCompare(b.name));
+
+  return new Response(JSON.stringify(response), {
+    status: 200,
+  });
 }

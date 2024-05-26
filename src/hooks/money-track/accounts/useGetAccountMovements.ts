@@ -4,7 +4,7 @@ export default function useGetAccountMovements(
   accountId: string,
   period: number,
 ) {
-  return useQuery({
+  return useQuery<Record<string, number | string>[]>({
     queryKey: ['account-movements', accountId, period],
     queryFn: async () => {
       const response = await fetch(

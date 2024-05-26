@@ -7,6 +7,7 @@ import mongoose, {
 
 interface IBankAccount extends Document {
   name: string;
+  description?: string;
   balance: number;
   currency: string;
   userId: ObjectId;
@@ -23,6 +24,9 @@ const BankAccountSchema = new Schema<IBankAccount>({
   name: {
     type: String,
     required: true,
+  },
+  description: {
+    type: String,
   },
   balance: {
     type: Number,

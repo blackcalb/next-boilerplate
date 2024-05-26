@@ -8,7 +8,8 @@ import mongoose, {
 export enum CategoryType {
   Expense = 'expense',
   Income = 'income',
-  Transfer = 'transfer',
+  TransferIn = 'transfer-in',
+  TransferOut = 'transfer-out',
   Deposit = 'deposit',
 }
 
