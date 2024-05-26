@@ -12,6 +12,7 @@ interface IMovement extends Document {
   date: Date;
   name: string;
   type: CategoryType;
+  categoryId?: ObjectId;
   userId: ObjectId;
   amount: number;
   currency: string;
@@ -41,6 +42,9 @@ const MovementSchema = new Schema<IMovement>({
     type: String,
     enum: CategoryType,
     required: true,
+  },
+  categoryId: {
+    type: mongoose.Schema.Types.ObjectId,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

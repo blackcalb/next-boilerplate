@@ -51,23 +51,20 @@ async function updateBudgetUsedAmount(
 
   await dbConnect();
 
-  await Budget.findOneAndUpdate(
-    {
-      categoryIds: categoryId,
-      from: {
-        $lte: date,
-      },
-      to: {
-        $gte: date,
-      },
-      userId: await getUserId(),
+  await Budget.find({
+    categoryIds: categoryId,
+    from: {
+      $lte: date,
     },
-    {
-      $inc: {
-        amount_spent: amount,
-      },
+    to: {
+      $gte: date,
     },
-  );
+    userId: await getUserId(),
+  }).updateMany({
+    $inc: {
+      amount_spent: amount,
+    },
+  });
 }
 
 export async function createNewRecord(_: any, formData: FormData) {
@@ -81,6 +78,7 @@ export async function createNewRecord(_: any, formData: FormData) {
   if (!bank) throw new Error('Bank account not found ');
 
   const data = getDataFromFormData(formData, bank.currency, userId);
+  console.log('🚀 ~ createNewRecord ~ data:', data);
 
   const isValid = AddRecordSchema.safeParse(data);
 
@@ -90,7 +88,7 @@ export async function createNewRecord(_: any, formData: FormData) {
     };
   }
 
-  const newRecord = await Movement.create(data);
+  await Movement.create(data);
 
   // update account balance
   await updateBalanceAccount(data.accountId, data.amount);
@@ -98,13 +96,13 @@ export async function createNewRecord(_: any, formData: FormData) {
   await updateBudgetUsedAmount(
     data.categoryId,
     data.type as CategoryType,
-    data.amount,
+    -data.amount,
     data.date,
   );
 
   revalidatePath('/money-track/dashboard');
 
   return {
-    data: newRecord,
+    status: 'success',
   };
 }

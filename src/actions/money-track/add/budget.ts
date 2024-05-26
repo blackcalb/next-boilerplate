@@ -32,7 +32,6 @@ export async function createNewBudget(_: any, formData: FormData) {
 
   await dbConnect();
   if (addPreviousCreatedRecords) {
-    // find all  records that match the categoryids and where done between the from and to dates
     const records = await Movement.find({
       categoryId: {
         $in: data.categoryIds,
