@@ -1,7 +1,7 @@
+import getAccounts from '@/actions/money-track/accounts/getAccounts';
 import TransferBetweenAccounts from '@/components/forms/TransferBetweenAccounts';
 import Modal from '@/components/modal';
 import Text from '@/components/Text';
-import getAccounts from '@/queries/accounts/getBanks';
 
 export default async function AddAccountPage() {
   const accounts = await getAccounts();

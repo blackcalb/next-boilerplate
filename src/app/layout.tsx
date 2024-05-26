@@ -11,6 +11,8 @@ import Sidemenu from '@/components/ui/menu/Sidemenu';
 import { MenuProvider } from '@/hooks/context/menu';
 import { cn } from '@/utils/cn';
 
+import Providers from './providers';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -32,18 +34,20 @@ export default function RootLayout({
           'bg-white dark:bg-black',
         )}
       >
-        <ThemeProvider enableSystem attribute="class">
-          <MenuProvider>
-            <Navigation />
+        <Providers>
+          <ThemeProvider enableSystem attribute="class">
+            <MenuProvider>
+              <Navigation />
 
-            <div className="flex flex-1">
-              <MenuWrapper>
-                <Sidemenu />
-              </MenuWrapper>
-              {children}
-            </div>
-          </MenuProvider>
-        </ThemeProvider>
+              <div className="flex flex-1">
+                <MenuWrapper>
+                  <Sidemenu />
+                </MenuWrapper>
+                {children}
+              </div>
+            </MenuProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

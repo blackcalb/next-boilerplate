@@ -1,13 +1,10 @@
-import Prisma from '@prisma/client';
+import dbConnect from '@/lib/mongoose';
+import User from '@/models/auth/Users';
 
 export async function getUserByEmail(email: string) {
-  const prisma = new Prisma.PrismaClient();
+  await dbConnect();
 
-  const user = await prisma.user.findFirst({
-    where: {
-      email,
-    },
-  });
+  const user = await User.findOne({ email });
 
   if (!user) {
     return undefined;

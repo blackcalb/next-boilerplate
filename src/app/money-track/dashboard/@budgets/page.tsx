@@ -10,12 +10,15 @@ export default async function BudgetsPage() {
     <div className="flex w-full flex-1 flex-col items-center justify-between">
       <div className="grid grid-cols-3">
         {currentBudgets.map((budget) => (
-          <div key={budget.id} className="border border-gray-200 p-4">
+          <div
+            key={budget._id.toString()}
+            className="border border-gray-200 p-4"
+          >
             <h2 className="text-lg font-semibold">{budget.name}</h2>
             <p>From: {budget.from.toString()}</p>
             <p>To: {budget.to.toString()}</p>
             <p>
-              Amount: {budget.used} / {budget.budget}
+              Amount: {budget.amount_spent} / {budget.budget}
             </p>
           </div>
         ))}

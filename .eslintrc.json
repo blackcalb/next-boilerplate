@@ -2,7 +2,8 @@
   "extends": [
     "airbnb-base",
     "next/core-web-vitals",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
   "rules": {
     "prettier/prettier": [
@@ -62,7 +63,8 @@
         "unused-imports/no-unused-vars": [
           "error",
           { "argsIgnorePattern": "^_" }
-        ]
+        ],
+        "no-underscore-dangle": "off"
       }
     },
     // Configuration for testing

@@ -1,0 +1,71 @@
+import mongoose, {
+  type Document,
+  type FlattenMaps,
+  type ObjectId,
+  Schema,
+} from 'mongoose';
+
+import { CategoryType } from './Categories';
+
+interface IMovement extends Document {
+  accountId: ObjectId;
+  date: Date;
+  name: string;
+  type: CategoryType;
+  userId: ObjectId;
+  amount: number;
+  currency: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type IMovementFlatDocument = FlattenMaps<IMovement> &
+  Required<{
+    _id: FlattenMaps<unknown>;
+  }>;
+
+const MovementSchema = new Schema<IMovement>({
+  accountId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: CategoryType,
+    required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  currency: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const Movement =
+  (mongoose.models.Movement as mongoose.Model<IMovement>) ??
+  mongoose.model<IMovement>('Movement', MovementSchema);
+
+export default Movement;

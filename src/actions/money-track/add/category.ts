@@ -1,12 +1,12 @@
 'use server';
 
-import Prisma from '@prisma/client';
-
 import getUserId from '@/actions/auth/getUserId';
+import dbConnect from '@/lib/mongoose';
+import Category from '@/models/money-track/Categories';
 import { NewCategorySchema } from '@/schemas/money-track/category';
 
 export async function createNewCategory(_: any, formData: FormData) {
-  const prisma = new Prisma.PrismaClient();
+  await dbConnect();
   const userId = await getUserId();
 
   const data = {
@@ -22,9 +22,7 @@ export async function createNewCategory(_: any, formData: FormData) {
       error: isValid.error.format(),
     };
   }
-  const newCategory = await prisma.categories.create({
-    data,
-  });
+  const newCategory = await Category.create(data);
 
   return {
     data: newCategory,

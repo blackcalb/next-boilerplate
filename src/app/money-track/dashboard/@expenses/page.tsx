@@ -1,27 +1,28 @@
 import { Fragment } from 'react';
 
 import { Text } from '@/components/Text/Text';
-import { getLastNRecords } from '@/queries/records/getLastNRecords';
+import { CategoryType } from '@/models/money-track/Categories';
+import { getLastNMovements } from '@/queries/records/getLastNRecords';
 
 export default async function ExpensesPage() {
-  const expenses = await getLastNRecords('expense', 5);
+  const movemets = await getLastNMovements(CategoryType.Expense, 5);
 
   return (
     <div className="grid grid-cols-4 items-center">
-      {expenses.length === 0 && (
+      {movemets.length === 0 && (
         <div className="col-span-4 self-stretch text-center">
           <Text variant="h5">No expenses yet</Text>
         </div>
       )}
-      {expenses.map((income) => (
-        <Fragment key={income.id}>
+      {movemets.map((movement) => (
+        <Fragment key={movement._id.toString()}>
           <Text variant="h5" className="col-span-2">
-            {income.subject}
+            {movement.name}
           </Text>
           <Text variant="p">
-            {income.amount.currency} {-1 * income.amount.value}
+            {movement.currency} {-1 * movement.amount}
           </Text>
-          <Text variant="p">{Intl.DateTimeFormat().format(income.date)}</Text>
+          <Text variant="p">{Intl.DateTimeFormat().format(movement.date)}</Text>
         </Fragment>
       ))}
     </div>

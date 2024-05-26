@@ -5,11 +5,12 @@ import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
 import { createNewBudget } from '@/actions/money-track/add/budget';
+import type { ICategoryFlatDocument } from '@/models/money-track/Categories';
 
 import FormButton from '../buttons/FormButton';
 
 interface CreateNewBudgetProps {
-  categories: { id: string; name: string }[];
+  categories: ICategoryFlatDocument[];
 }
 
 export default function CreateNewBudget({
@@ -19,10 +20,10 @@ export default function CreateNewBudget({
   const router = useRouter();
 
   useEffect(() => {
-    if (state?.data) {
+    if (state?.status === 'success') {
       router.push('/money-track/dashboard');
     }
-  }, [router, state?.data]);
+  }, [router, state?.status]);
 
   return (
     <form action={formAction}>
@@ -44,7 +45,10 @@ export default function CreateNewBudget({
         Category
         <select name="category" id="category" required multiple>
           {categories.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option
+              key={category._id.toString()}
+              value={category._id.toString()}
+            >
               {category.name}
             </option>
           ))}

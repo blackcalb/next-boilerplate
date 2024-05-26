@@ -1,15 +1,18 @@
-import Prisma from '@prisma/client';
-
 import getUserId from '@/actions/auth/getUserId';
+import dbConnect from '@/lib/mongoose';
+import Category from '@/models/money-track/Categories';
 
 export default async function getCategoriesByType(type: string) {
-  const prisma = new Prisma.PrismaClient();
+  await dbConnect();
+
   const userId = await getUserId();
 
-  return prisma.categories.findMany({
-    where: {
+  return Category.find(
+    {
       type,
       userId,
     },
-  });
+    undefined,
+    { lean: true },
+  );
 }

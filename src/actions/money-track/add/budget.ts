@@ -1,9 +1,12 @@
 'use server';
 
-import Prisma from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 import getUserId from '@/actions/auth/getUserId';
+import dbConnect from '@/lib/mongoose';
+import Budget from '@/models/money-track/Budgets';
+import { CategoryType } from '@/models/money-track/Categories';
+import Movement from '@/models/money-track/Movemets';
 import { AddBudgetSchema } from '@/schemas/money-track/budget';
 
 export async function createNewBudget(_: any, formData: FormData) {
@@ -15,7 +18,7 @@ export async function createNewBudget(_: any, formData: FormData) {
     to: new Date(formData.get('to') as string),
     categoryIds: (formData.getAll('category') as string[]) ?? [],
     budget: Number(formData.get('budget')),
-    used: 0,
+    amount_spent: 0,
     userId,
   };
 
@@ -25,32 +28,29 @@ export async function createNewBudget(_: any, formData: FormData) {
     return { error: isValid.error.format() };
   }
 
-  const prisma = new Prisma.PrismaClient();
-
   const addPreviousCreatedRecords = formData.get('addPreviousCreatedRecords');
 
+  await dbConnect();
   if (addPreviousCreatedRecords) {
     // find all  records that match the categoryids and where done between the from and to dates
-    const records = await prisma.records.findMany({
-      where: {
-        categoryId: {
-          in: data.categoryIds,
-        },
-        date: {
-          gte: data.from,
-          lte: data.to,
-        },
-        userId,
-        type: 'expense',
+    const records = await Movement.find({
+      categoryId: {
+        $in: data.categoryIds,
       },
+      date: {
+        $gte: data.from,
+        $lte: data.to,
+      },
+      userId,
+      type: CategoryType.Expense,
     });
 
-    data.used = records.reduce((acc, record) => acc + record.amount.value, 0);
+    data.amount_spent = records.reduce((acc, record) => acc - record.amount, 0);
   }
 
-  const newBudget = await prisma.budgets.create({ data });
+  await Budget.create(data);
 
   revalidatePath('/money-track/dashboard');
 
-  return { data: newBudget };
+  return { status: 'success' };
 }

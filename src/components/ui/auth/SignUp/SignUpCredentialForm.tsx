@@ -16,11 +16,10 @@ export function SignUpCredentialForm() {
   const [state, dispatch] = useFormState(signUpAction, undefined);
 
   useEffect(() => {
-    if (state?.data) {
-      console.log('redirecting');
+    if (state?.status === 'success') {
       router.push('/');
     }
-  }, [router, state]);
+  }, [router, state?.status]);
 
   return (
     <form action={dispatch} className="space-y-3">

@@ -7,7 +7,7 @@ export const AddAccountSchema = z.object({
   userId: z.string().length(24),
 });
 
-export const SignUpSchema = z
+export const SignUpUserSchema = z
   .object({
     email: z.string().email('Invalid email address'),
     name: z.string().min(1),

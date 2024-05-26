@@ -15,10 +15,10 @@ export default function CreateNewAccount() {
   const router = useRouter();
 
   useEffect(() => {
-    if (state?.data) {
+    if (state?.status === 'success') {
       router.push('/money-track/dashboard');
     }
-  }, [router, state?.data]);
+  }, [router, state?.status]);
 
   return (
     <form action={formAction}>

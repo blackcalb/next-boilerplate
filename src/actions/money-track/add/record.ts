@@ -1,25 +1,27 @@
 'use server';
 
-import Prisma from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 import getUserId from '@/actions/auth/getUserId';
+import dbConnect from '@/lib/mongoose';
+import BankAccount from '@/models/money-track/BankAcounts';
+import Budget from '@/models/money-track/Budgets';
+import { CategoryType } from '@/models/money-track/Categories';
+import Movement from '@/models/money-track/Movemets';
 import { AddRecordSchema } from '@/schemas/money-track/records';
-import { RecordType } from '@/types/moneyTrack';
 
 function getDataFromFormData(
   formData: FormData,
   currency: string,
   userId: string,
 ) {
-  const factor = formData.get('type') === RecordType.income ? 1 : -1;
+  const factor = formData.get('type') === CategoryType.Income ? 1 : -1;
+
   return {
     type: formData.get('type') as string,
-    subject: formData.get('subject') as string,
-    amount: {
-      value: factor * Number(formData.get('amount')),
-      currency,
-    },
+    name: formData.get('name') as string,
+    amount: factor * Number(formData.get('amount')),
+    currency,
     accountId: formData.get('account') as string,
     categoryId: formData.get('category') as string,
     date: new Date(formData.get('date') as string),
@@ -28,68 +30,53 @@ function getDataFromFormData(
 }
 
 async function updateBalanceAccount(bankId: string, amount: number) {
-  const prisma = new Prisma.PrismaClient();
+  await dbConnect();
 
-  const bank = await prisma.accounts.findUnique({
-    where: { id: bankId },
-  });
+  const bank = await BankAccount.findById(bankId);
 
   if (!bank) throw new Error('Bank account not found ');
 
-  await prisma.accounts.update({
-    where: {
-      id: bank.id,
-    },
-    data: {
-      balance: bank.balance + amount,
-    },
+  await BankAccount.findByIdAndUpdate(bankId, {
+    balance: bank.balance + amount,
   });
 }
 
 async function updateBudgetUsedAmount(
   categoryId: string,
-  transactionType: RecordType,
+  transactionType: CategoryType,
   amount: number,
   date: Date,
 ) {
-  if (transactionType === RecordType.income) return;
+  if (transactionType !== CategoryType.Expense) return;
 
-  const prisma = new Prisma.PrismaClient();
+  await dbConnect();
 
-  const budget = await prisma.budgets.findFirst({
-    where: {
-      categoryIds: {
-        has: categoryId,
+  await Budget.findOneAndUpdate(
+    {
+      categoryIds: categoryId,
+      from: {
+        $lte: date,
       },
       to: {
-        gte: date,
+        $gte: date,
       },
-      from: {
-        lte: date,
+      userId: await getUserId(),
+    },
+    {
+      $inc: {
+        amount_spent: amount,
       },
     },
-  });
-
-  if (budget) {
-    await prisma.budgets.update({
-      where: {
-        id: budget.id,
-      },
-      data: {
-        used: budget.used + amount,
-      },
-    });
-  }
+  );
 }
 
 export async function createNewRecord(_: any, formData: FormData) {
-  const prisma = new Prisma.PrismaClient();
+  await dbConnect();
 
   const userId = await getUserId();
+  const bankId = formData.get('account') as string;
 
-  const bank = await prisma.accounts.findUnique({
-    where: { id: formData.get('account') as string },
-  });
+  const bank = await BankAccount.findById(bankId);
 
   if (!bank) throw new Error('Bank account not found ');
 
@@ -103,15 +90,15 @@ export async function createNewRecord(_: any, formData: FormData) {
     };
   }
 
-  const newRecord = await prisma.records.create({ data });
+  const newRecord = await Movement.create(data);
 
   // update account balance
-  await updateBalanceAccount(data.accountId, data.amount.value);
+  await updateBalanceAccount(data.accountId, data.amount);
 
   await updateBudgetUsedAmount(
     data.categoryId,
-    data.type as RecordType,
-    data.amount.value,
+    data.type as CategoryType,
+    data.amount,
     data.date,
   );
 

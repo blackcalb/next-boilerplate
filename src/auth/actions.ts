@@ -1,10 +1,12 @@
 'use server';
 
-import Prisma from '@prisma/client';
 import { AuthError } from 'next-auth';
 import type { ZodFormattedError } from 'zod';
 
-import { SignUpSchema } from '@/schemas/money-track/account';
+import dbConnect from '@/lib/mongoose';
+import Account from '@/models/auth/Accounts';
+import User from '@/models/auth/Users';
+import { SignUpUserSchema } from '@/schemas/money-track/account';
 
 import { signIn } from './auth';
 
@@ -41,29 +43,24 @@ type SignUpState =
       >;
     }
   | {
-      data: {
-        id: string;
-        name: string | null;
-        email: string | null;
-        emailVerified: Date | null;
-        image: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-      };
+      status: string;
     }
   | undefined;
 
 export async function signUpAction(_: SignUpState, formData: FormData) {
-  const prisma = new Prisma.PrismaClient();
+  dbConnect();
 
-  const data = {
+  const userData = {
     email: formData.get('email') as string,
     name: formData.get('name') as string,
-    password: formData.get('password') as string,
   };
 
-  const isValid = SignUpSchema.safeParse({
-    ...data,
+  // password: formData.get('password') as string,
+  const password = formData.get('password') as string;
+
+  const isValid = SignUpUserSchema.safeParse({
+    ...userData,
+    password,
     rePassword: formData.get('rePassword') as string,
   });
 
@@ -72,17 +69,20 @@ export async function signUpAction(_: SignUpState, formData: FormData) {
   }
 
   // eslint-disable-next-line unused-imports/no-unused-vars
-  const { password, ...newUser } = await prisma.user.create({
-    data,
+  const newUser = await User.create(userData);
+  await Account.create({
+    userId: newUser._id.toString(),
+    type: 'credentials',
+    password,
   });
 
   await signIn('credentials', {
-    email: data.email,
+    email: userData.email,
     password,
     redirect: false,
     redirectTo: '/',
   });
-  return { data: newUser };
+  return { status: 'success' };
 }
 
 export async function authenticateGithubAction() {

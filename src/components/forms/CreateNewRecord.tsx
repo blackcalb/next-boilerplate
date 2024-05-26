@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -8,12 +6,16 @@ import { useFormState } from 'react-dom';
 
 import { createNewRecord } from '@/actions/money-track/add/record';
 import FormButton from '@/components/buttons/FormButton';
-import type { RecordType } from '@/types/moneyTrack';
+import type { IBankAccountFlatDocument } from '@/models/money-track/BankAcounts';
+import type {
+  CategoryType,
+  ICategoryFlatDocument,
+} from '@/models/money-track/Categories';
 
 interface CreateNewRecordProps {
-  bankAccounts: { id: string; name: string }[];
-  categories: { id: string; name: string }[];
-  type: RecordType;
+  bankAccounts: IBankAccountFlatDocument[];
+  categories: ICategoryFlatDocument[];
+  type: CategoryType;
 }
 
 export default function CreateNewRecord({
@@ -34,11 +36,11 @@ export default function CreateNewRecord({
     <form className="flex flex-col" action={formAction}>
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="redirect" value="/money-track/dashboard" />
-      <label htmlFor="subject">
+      <label htmlFor="name">
         Subject
-        <input type="text" id="subject" name="subject" required />
+        <input type="text" id="name" name="name" required />
       </label>
-      {state?.error?.subject && <p>{state.error.subject._errors.join(', ')}</p>}
+      {state?.error?.name && <p>{state.error.name._errors.join(', ')}</p>}
       <label htmlFor="amount">
         amount{' '}
         <input
@@ -51,14 +53,15 @@ export default function CreateNewRecord({
         />
       </label>
       {state?.error?.amount && <p>{state.error.amount._errors.join(', ')}</p>}
-      {state?.error?.amount && (
-        <p>{state.error.amount.value?._errors.join(', ')}</p>
-      )}
+      {state?.error?.amount && <p>{state.error.amount?._errors.join(', ')}</p>}
       <label htmlFor="category">
         Category
         <select name="category" id="category" required>
           {categories.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option
+              key={category._id.toString()}
+              value={category._id.toString()}
+            >
               {category.name}
             </option>
           ))}
@@ -70,7 +73,7 @@ export default function CreateNewRecord({
       <label htmlFor="account">
         <select name="account" id="account" required>
           {bankAccounts.map((account) => (
-            <option key={account.id} value={account.id}>
+            <option key={account._id.toString()} value={account._id.toString()}>
               {account.name}
             </option>
           ))}

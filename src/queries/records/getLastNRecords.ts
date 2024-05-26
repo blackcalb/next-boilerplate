@@ -1,23 +1,23 @@
-import Prisma from '@prisma/client';
-
 import getUserId from '@/actions/auth/getUserId';
-import type { RecordType } from '@/types/moneyTrack';
+import dbConnect from '@/lib/mongoose';
+import type { CategoryType } from '@/models/money-track/Categories';
+import Movement from '@/models/money-track/Movemets';
 
-export async function getLastNRecords(
-  type: keyof typeof RecordType,
-  n: number = 10,
-) {
-  const prisma = new Prisma.PrismaClient();
+export async function getLastNMovements(type: CategoryType, n: number = 10) {
+  await dbConnect();
+
   const userId = await getUserId();
 
-  return prisma.records.findMany({
-    take: n,
-    orderBy: {
-      date: 'desc',
-    },
-    where: {
+  return Movement.find(
+    {
       type,
       userId,
     },
-  });
+    null,
+    {
+      sort: { date: -1 },
+      limit: n,
+      lean: true,
+    },
+  );
 }

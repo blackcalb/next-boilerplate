@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import NextAuth, { type User } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from 'next-auth/providers/github';
 import { z } from 'zod';
 
 import { getUserByEmail } from '@/actions/auth/getUserByEmail';
+import clientPromise from '@/lib/mongodb';
+import Account from '@/models/auth/Accounts';
 
 import { authConfig } from './auth.config';
 
@@ -19,11 +20,9 @@ async function getUser(email: string): Promise<User | undefined> {
   }
 }
 
-const prisma = new PrismaClient();
-
 export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
-  adapter: PrismaAdapter(prisma),
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHub,
     Credentials({
@@ -33,12 +32,19 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           .safeParse(credentials);
 
         if (parsedCredentials.success) {
-          const {
-            email,
-            // password
-          } = parsedCredentials.data;
+          const { email, password } = parsedCredentials.data;
+
           const user = await getUser(email);
           if (!user) return null;
+
+          const userCredentials = await Account.findOne({
+            userId: user.id,
+            type: 'credentials',
+          });
+
+          if (!userCredentials || userCredentials.password !== password) {
+            return null;
+          }
 
           return user;
         }

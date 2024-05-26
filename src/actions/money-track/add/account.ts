@@ -1,9 +1,12 @@
 'use server';
 
-import Prisma from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 import getUserId from '@/actions/auth/getUserId';
+import dbConnect from '@/lib/mongoose';
+import BankAccount from '@/models/money-track/BankAcounts';
+import { CategoryType } from '@/models/money-track/Categories';
+import Movement from '@/models/money-track/Movemets';
 import { AddAccountSchema } from '@/schemas/money-track/account';
 
 export async function createNewAccount(_: any, formData: FormData) {
@@ -21,27 +24,23 @@ export async function createNewAccount(_: any, formData: FormData) {
   if (isValid.error) {
     return { error: isValid.error.format() };
   }
-  const prisma = new Prisma.PrismaClient();
+  await dbConnect();
 
-  const newAccount = await prisma.accounts.create({ data });
+  const saveAccount = await BankAccount.create(data);
 
   if (data.balance > 0) {
-    await prisma.records.create({
-      data: {
-        accountId: newAccount.id,
-        amount: {
-          value: data.balance,
-          currency: data.currency,
-        },
-        type: 'deposit',
-        date: new Date(),
-        subject: `Initial Balance - ${data.name}`,
-        userId,
-      },
+    await Movement.create({
+      accountId: saveAccount._id,
+      amount: data.balance,
+      currency: data.currency,
+      type: CategoryType.Deposit,
+      date: new Date(),
+      name: `Initial Balance - ${data.name}`,
+      userId,
     });
   }
 
   revalidatePath('/money-track/dashboard');
 
-  return { data: newAccount };
+  return { status: 'success' };
 }

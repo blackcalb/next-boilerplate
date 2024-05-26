@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 
 interface SelectOption {
-  value: string;
+  value: string | number;
   label: string;
 }
 

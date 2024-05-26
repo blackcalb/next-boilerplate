@@ -4,26 +4,26 @@
 
 import { faShuffle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { Accounts } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
-import { transferBetweenAccountAction } from '@/actions/money-track/accounts/transfer-between-accounts-action';
+import { transferBetweenAccountAction } from '@/actions/money-track/accounts/transferBetweenAccounts';
+import type { IBankAccountFlatDocument } from '@/models/money-track/BankAcounts';
 
 import FormButton from '../buttons/FormButton';
 import Input from '../inputs/input';
 import Select from '../inputs/select';
 
 interface TransferBetweenAccountsProps {
-  accounts: Accounts[];
+  accounts: IBankAccountFlatDocument[];
 }
 
 export default function TransferBetweenAccounts({
   accounts,
 }: Readonly<TransferBetweenAccountsProps>) {
   const options = accounts.map((account) => ({
-    value: account.id,
+    value: account._id.toString(),
     label: account.name,
   }));
   const [state, formAction] = useFormState(transferBetweenAccountAction, null);
