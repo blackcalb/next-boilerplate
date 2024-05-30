@@ -122,6 +122,7 @@ export function AddNewItemForm({
               type="number"
               name="expectedAmount"
               label="Expected amount"
+              step={0.01}
               errors={status?.error?.expectedAmount?._errors}
             />
 
