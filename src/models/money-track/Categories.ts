@@ -21,6 +21,14 @@ interface ICategory extends Document {
   updatedAt: Date;
 }
 
+export interface IClientCategory
+  extends Omit<ICategory, 'userId' | 'createdAt' | 'updatedAt'> {
+  userId: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type ICategoryFlatDocument = FlattenMaps<ICategory> &
   Required<{
     _id: FlattenMaps<unknown>;

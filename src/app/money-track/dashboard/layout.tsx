@@ -8,6 +8,8 @@ interface BudgetsLayoutProps {
   actions: React.ReactNode;
   modal: React.ReactNode;
   accounts: React.ReactNode;
+  billTrack: React.ReactNode;
+  billTrackPlanningNextMonth: React.ReactNode;
 }
 
 export default function BudgetsLayout({
@@ -18,16 +20,23 @@ export default function BudgetsLayout({
   actions,
   modal,
   accounts,
+  billTrack,
+  billTrackPlanningNextMonth,
 }: Readonly<BudgetsLayoutProps>) {
   return (
     <main className="size-full">
+      {actions}
       <div className="my-10 grid w-full grid-cols-1 items-stretch gap-10 px-10 lg:grid-cols-2">
         {incomes}
         {expenses}
         {budgets}
         {accounts}
       </div>
-      {actions}
+      <div className="grid grid-cols-3 gap-8">
+        {billTrack}
+        {billTrackPlanningNextMonth}
+      </div>
+
       {children}
       {modal}
     </main>

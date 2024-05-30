@@ -12,6 +12,11 @@ interface IAccount extends Document {
   access_token?: string;
 }
 
+export interface IClientAccount extends Omit<IAccount, 'userId'> {
+  userId: string;
+  _id: string;
+}
+
 export type IAccounttFlatDocument = FlattenMaps<IAccount> &
   Required<{
     _id: FlattenMaps<unknown>;

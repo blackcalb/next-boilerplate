@@ -15,6 +15,14 @@ interface IBankAccount extends Document {
   updatedAt: Date;
 }
 
+export interface IBankAccountClient
+  extends Omit<IBankAccount, 'userId' | 'createdAt' | 'updatedAt'> {
+  _id: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type IBankAccountFlatDocument = FlattenMaps<IBankAccount> &
   Required<{
     _id: FlattenMaps<unknown>;

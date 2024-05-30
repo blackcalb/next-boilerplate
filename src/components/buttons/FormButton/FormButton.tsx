@@ -24,7 +24,7 @@ export const FormButton = ({
       disabled={disabled || pending}
       className={cn('flex gap-2', className)}
     >
-      {children}
+      <div className={cn(pending && 'animate-spin')}>{children}</div>
     </BaseButton>
   );
 };

@@ -11,6 +11,7 @@ export function Input({
   label,
   placeholder,
   id,
+  name,
   helper,
   errors,
   ...props
@@ -21,7 +22,8 @@ export function Input({
         <input
           {...props}
           className={cn('p-4 w-full', className)}
-          id={id}
+          id={id ?? name}
+          name={name}
           placeholder={placeholder || label}
         />
       </label>
