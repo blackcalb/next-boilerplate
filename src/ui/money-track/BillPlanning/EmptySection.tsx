@@ -13,7 +13,7 @@ export default function EmptySection({ month }: Readonly<{ month: number }>) {
       </Text>
       <AddNewItem />
       <Text>or</Text>
-      <Text>Copy from prev month</Text>
+      <Text>Copy from prev month(wip)</Text>
     </div>
   );
 }

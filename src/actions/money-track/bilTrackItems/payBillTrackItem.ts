@@ -10,7 +10,6 @@ import Movement from '@/models/money-track/Movemets';
 
 const payBillTrackItemSchema = z.object({
   id: z.string(),
-  bankAccountId: z.string(),
   amount: z.number(),
 });
 
@@ -19,7 +18,6 @@ export async function payBillTrackItem(_: any, formData: FormData) {
 
   const data = {
     id: formData.get('id') as string,
-    bankAccountId: formData.get('bankAccountId') as string,
     amount: Number(formData.get('amount') ?? 0),
   };
 
@@ -27,7 +25,7 @@ export async function payBillTrackItem(_: any, formData: FormData) {
 
   if (isValid.error) {
     return {
-      error: isValid.error.format(),
+      errors: isValid.error.format(),
     };
   }
 
@@ -38,15 +36,15 @@ export async function payBillTrackItem(_: any, formData: FormData) {
       error: 'Not found',
     };
   }
-
+  // TODO: extract this to a function nad update places, because here we are leveaing budgets out
   await Movement.create({
-    accountId: data.bankAccountId,
+    accountId: currentBill.bankAccountId,
+    categoryId: currentBill.categoryId,
     date: new Date(),
     name: `Payment for ${currentBill.name}`,
     amount: data.amount,
     currency: 'EUR',
     type: CategoryType.Expense,
-    billTrackId: data.id,
     userId: currentBill.userId,
   });
 

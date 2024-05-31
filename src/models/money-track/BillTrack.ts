@@ -1,4 +1,9 @@
-import { type FlattenMaps, type ObjectId, Schema } from 'mongoose';
+import {
+  type Document,
+  type FlattenMaps,
+  type ObjectId,
+  Schema,
+} from 'mongoose';
 import mongoose from 'mongoose';
 
 export enum BillTrackStatus {
@@ -7,17 +12,37 @@ export enum BillTrackStatus {
   Deleted = 'deleted',
 }
 
-interface IBillTrack extends Document {
+export interface IBillTrack extends Document {
   name: string;
   expectedAmount: number;
   status: BillTrackStatus;
   finalAmount?: number;
+  currency: string;
   date: Date;
   userId: ObjectId;
   bankAccountId: ObjectId;
   categoryId: ObjectId;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IBillTrackClient
+  extends Omit<
+    IBillTrack,
+    | 'userId'
+    | 'bankAccountId'
+    | 'categoryId'
+    | 'date'
+    | 'createdAt'
+    | 'updatedAt'
+  > {
+  _id: string;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  bankAccountId: string;
+  categoryId: string;
 }
 
 export type IBillTrackFlatDocument = FlattenMaps<IBillTrack> &
@@ -36,6 +61,10 @@ const BillTrackSchema = new Schema<IBillTrack>({
   },
   finalAmount: {
     type: Number,
+  },
+  currency: {
+    type: String,
+    default: 'EUR',
   },
   status: {
     type: String,
