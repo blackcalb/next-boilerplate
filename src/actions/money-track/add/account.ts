@@ -11,6 +11,8 @@ import { AddAccountSchema } from '@/schemas/money-track/account';
 
 import createMovement from '../movemets/createMovement';
 
+const DEFAULT_PATH = '/money-track/dashboard';
+
 export async function createNewAccount(_: any, formData: FormData) {
   const userId = await getUserId();
 
@@ -20,6 +22,8 @@ export async function createNewAccount(_: any, formData: FormData) {
     balance: Number(formData.get('initialBalance') ?? 0),
     userId,
   };
+
+  const refreshPath = (formData.get('path') as string) ?? DEFAULT_PATH;
 
   const isValid = AddAccountSchema.safeParse(data);
 
@@ -42,7 +46,7 @@ export async function createNewAccount(_: any, formData: FormData) {
     });
   }
 
-  revalidatePath('/money-track/dashboard');
+  revalidatePath(refreshPath);
 
   return { status: 'success' };
 }

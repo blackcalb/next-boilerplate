@@ -7,7 +7,7 @@ interface BudgetsLayoutProps {
   budgets: React.ReactNode;
   actions: React.ReactNode;
   modal: React.ReactNode;
-  accounts: React.ReactNode;
+  bankAccounts: React.ReactNode;
   billTrack: React.ReactNode;
   billTrackPlanningNextMonth: React.ReactNode;
 }
@@ -19,7 +19,7 @@ export default function BudgetsLayout({
   budgets,
   actions,
   modal,
-  accounts,
+  bankAccounts,
   billTrack,
   billTrackPlanningNextMonth,
 }: Readonly<BudgetsLayoutProps>) {
@@ -30,7 +30,7 @@ export default function BudgetsLayout({
         {incomes}
         {expenses}
         {budgets}
-        {accounts}
+        {bankAccounts}
       </div>
       <div className="grid grid-cols-3 gap-8 px-12">
         {billTrack}

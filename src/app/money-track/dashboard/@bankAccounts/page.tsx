@@ -22,7 +22,9 @@ function AccountCard({
 }
 
 export default async function BankPage() {
-  const accounts = await getAccounts();
+  const accounts = await getAccounts({
+    showAll: false,
+  });
 
   if (!accounts) {
     return null;

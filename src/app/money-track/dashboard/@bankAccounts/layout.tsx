@@ -25,7 +25,12 @@ export default function BudgetLayout({
       }
       className="flex flex-col text-amber-600 dark:text-amber-400"
     >
-      {children}
+      <div className="flex flex-1 flex-col">
+        <div className="flex-1">{children}</div>
+        <Link href="/money-track/accounts">
+          <Text> Show All</Text>
+        </Link>
+      </div>
     </Card>
   );
 }

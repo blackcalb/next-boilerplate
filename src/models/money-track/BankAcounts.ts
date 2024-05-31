@@ -13,6 +13,9 @@ export interface IBankAccount extends Document {
   userId: ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  options?: {
+    hideInDashboard?: boolean;
+  };
 }
 
 export interface IBankAccountClient
@@ -55,6 +58,12 @@ const BankAccountSchema = new Schema<IBankAccount>({
   updatedAt: {
     type: Date,
     default: Date.now,
+  },
+  options: {
+    hideInDashboard: {
+      type: Boolean,
+      default: false,
+    },
   },
 });
 
