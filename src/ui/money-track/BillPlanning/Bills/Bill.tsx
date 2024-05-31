@@ -2,7 +2,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import Text from '@/components/Text';
-import type { IBillTrackClient } from '@/models/money-track/BillTrack';
+import {
+  BillTrackStatus,
+  type IBillTrackClient,
+} from '@/models/money-track/BillTrack';
 import { cn } from '@/utils/cn';
 
 import { DeleteBillButton } from '../DeleteBillButton';
@@ -10,27 +13,38 @@ import { PayButtonPendingBills } from './PayPendingBillsButton';
 
 interface PendingItemProps {
   bill: IBillTrackClient;
-  pendingMode?: boolean;
 }
 
-export function PendingItem({
-  bill,
-  pendingMode = false,
-}: Readonly<PendingItemProps>) {
+export function PendingItem({ bill }: Readonly<PendingItemProps>) {
+  // variable that show if bill.date and today have less than 2 day of difference
+  const isPending = BillTrackStatus.Pending === bill.status;
+  const isPaid = BillTrackStatus.Paid === bill.status;
+  const isNear =
+    new Date(bill.date).getTime() - new Date().getTime() <
+    2 * 24 * 60 * 60 * 1000;
+
+  const isLate = new Date(bill.date).getTime() < new Date().getTime();
+
   return (
     <div
       className={cn(
+        isPending && {
+          'border-sky-600 bg-sky-400': !isNear && !isLate,
+          'border-amber-600 bg-amber-400': isNear,
+          'border-orange-600 bg-orange-400': isLate,
+        },
+        isPaid && 'border-lime-600 bg-lime-400',
         'w-full px-4 py-2',
-        'rounded-lg border-2 border-lime-500',
+        'rounded-lg border-2',
         'flex gap-4',
-        'bg-lime-400',
+        'text-black',
       )}
     >
-      <div className="grid w-full grid-cols-[1fr_32px_32px] items-center gap-x-6">
+      <div className="grid w-full grid-cols-[1fr_32px_50px] items-center gap-x-6">
         <div
           className={cn(
             'flex items-center justify-between',
-            !pendingMode && 'col-span-3',
+            !isPending && 'col-span-4',
           )}
         >
           <div className="flex flex-col justify-between">
@@ -63,13 +77,13 @@ export function PendingItem({
             </Text>
           </div>
         </div>
-        {pendingMode && (
+        {isPending && (
           <PayButtonPendingBills
             id={bill._id}
             defaultAmount={bill.expectedAmount}
           />
         )}
-        {pendingMode && <DeleteBillButton id={bill._id} />}
+        {isPending && <DeleteBillButton id={bill._id} />}
       </div>
     </div>
   );

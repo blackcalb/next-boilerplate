@@ -32,7 +32,7 @@ export default function BudgetsLayout({
         {budgets}
         {accounts}
       </div>
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-3 gap-8 px-12">
         {billTrack}
         {billTrackPlanningNextMonth}
       </div>

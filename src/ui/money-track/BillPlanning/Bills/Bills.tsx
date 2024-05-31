@@ -21,7 +21,7 @@ export function PendingBills({
       </Text>
       <div className="flex flex-col gap-2">
         {bills.map((bill) => (
-          <PendingItem key={bill._id} bill={bill} pendingMode={pendingMode} />
+          <PendingItem key={bill._id} bill={bill} />
         ))}
       </div>
     </div>
