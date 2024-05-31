@@ -23,7 +23,7 @@ export default async function ResumenMonthPage({
     .map(mapDocumentToClient);
 
   if (!bills || bills.length === 0) {
-    return <EmptySection month={1} />;
+    return <EmptySection month={0} />;
   }
 
   const hasPaidBills = paidBills.length > 0;
