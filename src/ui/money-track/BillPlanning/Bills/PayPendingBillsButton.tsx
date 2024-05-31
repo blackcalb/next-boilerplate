@@ -31,7 +31,7 @@ export function PayButtonPendingBills({
       </BaseButton>
       <motion.div
         key={id}
-        className="col-span-3 row-start-2"
+        className="col-span-3 row-start-2 overflow-hidden"
         variants={{
           hidden: { height: 0, transition: { delay: 0.2 } },
           visible: { height: 84 },

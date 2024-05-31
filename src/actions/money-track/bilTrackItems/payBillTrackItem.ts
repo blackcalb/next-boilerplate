@@ -6,7 +6,8 @@ import { z } from 'zod';
 import dbConnect from '@/lib/mongoose';
 import BillTrack, { BillTrackStatus } from '@/models/money-track/BillTrack';
 import { CategoryType } from '@/models/money-track/Categories';
-import Movement from '@/models/money-track/Movemets';
+
+import createMovement from '../movemets/createMovement';
 
 const payBillTrackItemSchema = z.object({
   id: z.string(),
@@ -37,16 +38,22 @@ export async function payBillTrackItem(_: any, formData: FormData) {
     };
   }
   // TODO: extract this to a function nad update places, because here we are leveaing budgets out
-  await Movement.create({
-    accountId: currentBill.bankAccountId,
-    categoryId: currentBill.categoryId,
-    date: new Date(),
-    name: `Payment for ${currentBill.name}`,
-    amount: data.amount,
-    currency: 'EUR',
-    type: CategoryType.Expense,
-    userId: currentBill.userId,
-  });
+  await createMovement(
+    {
+      accountId: currentBill.bankAccountId,
+      categoryId: currentBill.categoryId,
+      date: new Date(),
+      name: `Payment for ${currentBill.name}`,
+      amount: -data.amount,
+      currency: 'EUR',
+      type: CategoryType.Expense,
+      userId: currentBill.userId,
+    },
+    {
+      updateAccountBalance: true,
+      updateBudgets: true,
+    },
+  );
 
   await BillTrack.findByIdAndUpdate(data.id, {
     status: BillTrackStatus.Paid,

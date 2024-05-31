@@ -5,7 +5,7 @@ import mongoose, {
   Schema,
 } from 'mongoose';
 
-interface IBankAccount extends Document {
+export interface IBankAccount extends Document {
   name: string;
   description?: string;
   balance: number;

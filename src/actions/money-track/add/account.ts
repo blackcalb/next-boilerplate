@@ -1,13 +1,15 @@
 'use server';
 
+import type { ObjectId } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 
 import getUserId from '@/actions/auth/getUserId';
 import dbConnect from '@/lib/mongoose';
 import BankAccount from '@/models/money-track/BankAcounts';
 import { CategoryType } from '@/models/money-track/Categories';
-import Movement from '@/models/money-track/Movemets';
 import { AddAccountSchema } from '@/schemas/money-track/account';
+
+import createMovement from '../movemets/createMovement';
 
 export async function createNewAccount(_: any, formData: FormData) {
   const userId = await getUserId();
@@ -29,8 +31,8 @@ export async function createNewAccount(_: any, formData: FormData) {
   const saveAccount = await BankAccount.create(data);
 
   if (data.balance > 0) {
-    await Movement.create({
-      accountId: saveAccount._id,
+    await createMovement({
+      accountId: saveAccount._id as ObjectId,
       amount: data.balance,
       currency: data.currency,
       type: CategoryType.Deposit,
