@@ -14,6 +14,6 @@ export async function updateBalanceAccount(
   if (!bank) throw new Error('Bank account not found ');
 
   await BankAccount.findByIdAndUpdate(bankId, {
-    balance: bank.balance + amount,
+    balance: Math.round(100 * (bank.balance + amount)) / 100,
   });
 }

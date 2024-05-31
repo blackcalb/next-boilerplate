@@ -83,9 +83,7 @@ export async function transferBetweenAccountAction(_: any, formData: FormData) {
         _id: data.fromAccountId,
       },
       {
-        $inc: {
-          balance: -data.amount,
-        },
+        balance: Math.round(100 * (fromAccount.balance - data.amount)) / 100,
       },
     ),
     BankAccount.updateOne(
@@ -93,9 +91,7 @@ export async function transferBetweenAccountAction(_: any, formData: FormData) {
         _id: data.toAccountId,
       },
       {
-        $inc: {
-          balance: data.amount,
-        },
+        balance: Math.round(100 * (toAccount.balance + data.amount)) / 100,
       },
     ),
   ]);
