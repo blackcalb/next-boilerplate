@@ -12,7 +12,14 @@ import { DeleteBillButton } from '../DeleteBillButton';
 import { PayButtonPendingBills } from './PayPendingBillsButton';
 
 interface PendingItemProps {
-  bill: IBillTrackClient;
+  bill: IBillTrackClient & {
+    category: {
+      name: string;
+    };
+    bankAccount: {
+      name: string;
+    };
+  };
 }
 
 export function PendingItem({ bill }: Readonly<PendingItemProps>) {
@@ -59,7 +66,9 @@ export function PendingItem({ bill }: Readonly<PendingItemProps>) {
                   day: 'numeric',
                 }).format(new Date(bill.date))}
               </Typography>
-              <Typography className="italic">account name</Typography>
+              <Typography className="italic">
+                {bill.category.name} - {bill.bankAccount.name}
+              </Typography>
             </div>
           </div>
           <div>

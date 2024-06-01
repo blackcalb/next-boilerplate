@@ -9,7 +9,7 @@ export default async function BudgetsPage() {
 
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-between">
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col gap-2">
         {currentBudgets.map((budget) => (
           <BudgetItem key={budget._id.toString()} budget={budget} />
         ))}

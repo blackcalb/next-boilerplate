@@ -6,7 +6,14 @@ import { type IBillTrackClient } from '@/models/money-track/BillTrack';
 import { PendingItem } from './Bill';
 
 interface PendingBillsProps {
-  bills: IBillTrackClient[];
+  bills: (IBillTrackClient & {
+    category: {
+      name: string;
+    };
+    bankAccount: {
+      name: string;
+    };
+  })[];
   pendingMode?: boolean;
 }
 
