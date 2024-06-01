@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 import { type IBillTrackClient } from '@/models/money-track/BillTrack';
 
 import { PendingItem } from './Bill';
@@ -16,9 +16,9 @@ export function PendingBills({
 }: Readonly<PendingBillsProps>) {
   return (
     <div className="flex flex-col gap-6">
-      <Text className="text-center text-2xl">
+      <Typography className="text-center text-2xl">
         {pendingMode ? 'Pending Bills' : 'Paid Bills'}
-      </Text>
+      </Typography>
       <div className="flex flex-col gap-2">
         {bills.map((bill) => (
           <PendingItem key={bill._id} bill={bill} />

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import Card from '@/components/surface/card';
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 import { SignUpCredentialForm } from '@/components/ui/auth/SignUp/SignUpCredentialForm';
 
 export default function SignInPage() {
@@ -14,10 +14,10 @@ export default function SignInPage() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4 ">
             <SignUpCredentialForm />
-            <Text>
+            <Typography>
               Already have an Account?{' '}
               <Link href="/auth/sign-in">Sign in here</Link>
-            </Text>
+            </Typography>
           </div>
         </div>
       </Card>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text } from '@/components/Text/Text';
+import Typography from '@/components/Typography';
 import { cn } from '@/utils/cn';
 
 interface CardProps {
@@ -29,9 +29,9 @@ export function Card({
     >
       <div className="mb-6 flex w-full justify-center">
         {header}
-        <Text variant="h3" className="font-bold">
+        <Typography variant="h3" className="font-bold">
           {title}
-        </Text>
+        </Typography>
       </div>
       {children}
     </div>

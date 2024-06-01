@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { Text } from '@/components/Text/Text';
+import Typography from '@/components/Typography';
 import { CategoryType } from '@/models/money-track/Categories';
 import { getLastNMovements } from '@/queries/records/getLastNRecords';
 
@@ -11,18 +11,20 @@ export default async function ExpensesPage() {
     <div className="grid grid-cols-4 items-center">
       {movemets.length === 0 && (
         <div className="col-span-4 self-stretch text-center">
-          <Text variant="h5">No expenses yet</Text>
+          <Typography variant="h5">No expenses yet</Typography>
         </div>
       )}
       {movemets.map((movement) => (
         <Fragment key={movement._id.toString()}>
-          <Text variant="h5" className="col-span-2">
+          <Typography variant="h5" className="col-span-2">
             {movement.name}
-          </Text>
-          <Text variant="p">
+          </Typography>
+          <Typography variant="p">
             {movement.currency} {-1 * movement.amount}
-          </Text>
-          <Text variant="p">{Intl.DateTimeFormat().format(movement.date)}</Text>
+          </Typography>
+          <Typography variant="p">
+            {Intl.DateTimeFormat().format(movement.date)}
+          </Typography>
         </Fragment>
       ))}
     </div>

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import BaseButton from '@/components/buttons/BaseButton';
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 
 export default function ActionsPage() {
   return (
@@ -15,14 +15,14 @@ export default function ActionsPage() {
         <Link href="/money-track/add/income">
           <BaseButton type="button" color="primary">
             <FontAwesomeIcon icon={faPlus} size="3x" />
-            <Text>Add Income</Text>
+            <Typography>Add Income</Typography>
           </BaseButton>
         </Link>
         <Link href="/money-track/add/expense">
           <BaseButton type="button" color="primary">
             <div>
               <FontAwesomeIcon icon={faMinus} size="3x" />
-              <Text>Add Expense</Text>
+              <Typography>Add Expense</Typography>
             </div>
           </BaseButton>
         </Link>
@@ -32,7 +32,7 @@ export default function ActionsPage() {
           <BaseButton type="button" color="primary">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faCirclePlus} size="2x" />
-              <Text>Add Category</Text>
+              <Typography>Add Category</Typography>
             </div>
           </BaseButton>
         </Link>

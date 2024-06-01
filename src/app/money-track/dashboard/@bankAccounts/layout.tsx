@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
 import Card from '@/components/surface/card';
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 
 export default function BudgetLayout({
   children,
@@ -12,7 +12,7 @@ export default function BudgetLayout({
     <Card
       header={
         <div className="flex w-full justify-between">
-          <Text className="text-xl font-bold">Accounts</Text>
+          <Typography className="text-xl font-bold">Accounts</Typography>
           <div className="mr-8 flex gap-4">
             <Link href="/money-track/accounts/transfer-between-accounts">
               <FontAwesomeIcon icon={faShuffle} size="2x" />
@@ -28,7 +28,7 @@ export default function BudgetLayout({
       <div className="flex flex-1 flex-col">
         <div className="flex-1">{children}</div>
         <Link href="/money-track/accounts">
-          <Text> Show All</Text>
+          <Typography> Show All</Typography>
         </Link>
       </div>
     </Card>

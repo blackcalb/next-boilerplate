@@ -1,4 +1,4 @@
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 import { BillTrackStatus } from '@/models/money-track/BillTrack';
 import { getBillOfMonth } from '@/queries/billTrack/getBillOfMonth';
 import { cn } from '@/utils/cn';
@@ -53,7 +53,7 @@ export default async function ResumenMonthPage({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Text className="text-center text-3xl">Resume</Text>
+        <Typography className="text-center text-3xl">Resume</Typography>
         <div className="flex flex-col justify-stretch gap-2 px-12">
           <div className="flex overflow-hidden rounded-md">
             <div
@@ -94,15 +94,17 @@ export default async function ResumenMonthPage({
         </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-1">
           <div className="flex items-center justify-end gap-4">
-            <Text>Total expected amount: {totalExpectedAmount}</Text>
+            <Typography>
+              Total expected amount: {totalExpectedAmount}
+            </Typography>
             <div className="size-4 bg-blue-300" />
           </div>
           <div className="flex items-center gap-2">
             <div className="size-4 bg-sky-300" />
-            <Text>Paid amount: {paidAmount}</Text>
+            <Typography>Paid amount: {paidAmount}</Typography>
           </div>
           <div className="flex items-center justify-end gap-2 text-right">
-            <Text>Pending amount: {pendingAmount}</Text>
+            <Typography>Pending amount: {pendingAmount}</Typography>
             <div className="size-4 bg-orange-300" />
           </div>
           <div className="flex items-center gap-2">
@@ -113,7 +115,7 @@ export default async function ResumenMonthPage({
                 surplus < 0 && 'bg-red-500',
               )}
             />
-            <Text>Surplus: {surplus}</Text>
+            <Typography>Surplus: {surplus}</Typography>
           </div>
         </div>
       </div>

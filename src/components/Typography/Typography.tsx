@@ -31,7 +31,7 @@ const size: Record<NonNullable<TextProps['variant']>, string> = {
   span: 'text-base',
 };
 
-export const Text = React.forwardRef<HTMLElement, TextProps>(
+export const Typography = React.forwardRef<HTMLElement, TextProps>(
   function TypographyComponent(
     {
       variant = defaultProps.variant,

@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import getUserId from '@/actions/auth/getUserId';
 import dbConnect from '@/lib/mongoose';
 import Budget from '@/models/money-track/Budgets';
@@ -6,22 +8,26 @@ export async function getCurrentBudgets() {
   await dbConnect();
   const userId = await getUserId();
 
-  return Budget.find(
+  return Budget.aggregate([
     {
-      from: {
-        $lte: new Date(),
+      $match: {
+        from: {
+          $lte: new Date(),
+        },
+        to: {
+          $gte: new Date(),
+        },
+        userId: new mongoose.Types.ObjectId(userId),
       },
-      to: {
-        $gte: new Date(),
-      },
-      userId,
     },
-    null,
     {
-      sort: {
-        from: -1,
+      $lookup: {
+        from: 'categories',
+        localField: 'categoryIds',
+        foreignField: '_id',
+        pipeline: [{ $project: { name: 1, _id: 0 } }],
+        as: 'category',
       },
-      lean: true,
     },
-  );
+  ]);
 }

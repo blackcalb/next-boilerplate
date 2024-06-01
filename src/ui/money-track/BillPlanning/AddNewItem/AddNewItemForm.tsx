@@ -58,7 +58,7 @@ export function AddNewItemForm({
           },
         },
         adding: {
-          height: '520px',
+          height: '550px',
         },
       }}
       transition={{

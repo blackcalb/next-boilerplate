@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import Divider from '@/components/divider';
 import Card from '@/components/surface/card';
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 import { SignInCredentialForm } from '@/components/ui/auth/SignIn/SignInCredentialForm';
 import { SignInGithubForm } from '@/components/ui/auth/SignIn/SignInGithubForm';
 
@@ -16,15 +16,15 @@ export default function SignInPage() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4 ">
             <SignInCredentialForm />
-            <Text>
+            <Typography>
               create an account <Link href="/auth/sign-up">here</Link>
-            </Text>
+            </Typography>
           </div>
           <Divider className="self-stretch" />
           <div>
-            <Text className="mb-4">
+            <Typography className="mb-4">
               Join with your fav social media accounts:
-            </Text>
+            </Typography>
             <div className="flex w-full justify-center">
               <SignInGithubForm />
             </div>

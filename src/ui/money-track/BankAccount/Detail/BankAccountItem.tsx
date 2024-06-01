@@ -1,26 +1,34 @@
-import { faWallet } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyBill } from '@fortawesome/free-solid-svg-icons/faMoneyBill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 import type { IBankAccount } from '@/models/money-track/BankAcounts';
+import { cn } from '@/utils/cn';
 
 export default function BankAccountItem({
-  account,
-}: Readonly<{ account: IBankAccount }>) {
+  bankAccount,
+}: Readonly<{ bankAccount: IBankAccount }>) {
   return (
-    <Link href={`/money-track/accounts/${account._id}`}>
-      <div className="rounded-md border-2 border-orange-400 px-2 py-4 text-orange-400 dark:border-orange-600">
-        <div className="text-center">
-          <FontAwesomeIcon icon={faWallet} size="2x" />
+    <Link href={`/money-track/accounts/${bankAccount._id}`}>
+      <div
+        className={cn(
+          'px-4 py-2',
+          'border-2 border-purple-500 rounded-md',
+          'bg-purple-400 text-black',
+          'flex gap-4 items-center',
+        )}
+      >
+        <div className="flex flex-1 items-center gap-4">
+          <FontAwesomeIcon icon={faMoneyBill} size="3x" />
+          {bankAccount.name}
         </div>
-        <Text className="mt-2 text-center text-2xl">{account.name}</Text>
-        <Text className="mt-2 text-center">
-          {Intl.NumberFormat('en-EU', {
+        <Typography>
+          {Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: account.currency,
-          }).format(account.balance)}
-        </Text>
+            currency: bankAccount.currency,
+          }).format(bankAccount.balance)}
+        </Typography>
       </div>
     </Link>
   );

@@ -1,7 +1,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import Text from '@/components/Text';
+import Typography from '@/components/Typography';
 import {
   BillTrackStatus,
   type IBillTrackClient,
@@ -48,33 +48,35 @@ export function PendingItem({ bill }: Readonly<PendingItemProps>) {
           )}
         >
           <div className="flex flex-col justify-between">
-            <Text className="text-lg font-semibold">{bill.name}</Text>
+            <Typography className="text-lg font-semibold">
+              {bill.name}
+            </Typography>
             <div className="flex gap-4">
-              <Text className="italic ">
+              <Typography className="italic ">
                 {Intl.DateTimeFormat('en-US', {
                   year: 'numeric',
                   month: 'short',
                   day: 'numeric',
                 }).format(new Date(bill.date))}
-              </Text>
-              <Text className="italic">account name</Text>
+              </Typography>
+              <Typography className="italic">account name</Typography>
             </div>
           </div>
           <div>
             {bill.finalAmount && (
-              <Text>
+              <Typography>
                 {Intl.NumberFormat('en-US', {
                   style: 'currency',
                   currency: bill.currency,
                 }).format(bill.finalAmount)}
-              </Text>
+              </Typography>
             )}
-            <Text className={cn(bill.finalAmount && 'line-through')}>
+            <Typography className={cn(bill.finalAmount && 'line-through')}>
               {Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: bill.currency,
               }).format(bill.expectedAmount)}
-            </Text>
+            </Typography>
           </div>
         </div>
         {isPending && (
