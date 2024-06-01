@@ -26,7 +26,7 @@ export function AccountSummary({ accountId }: Readonly<AccountSummaryProps>) {
     <div className="mx-auto ">
       <Select
         className="mx-auto w-1/2"
-        id="view"
+        name="view"
         label=""
         value={selectedView}
         onChange={(e) => setSelectedView(+e.target.value)}

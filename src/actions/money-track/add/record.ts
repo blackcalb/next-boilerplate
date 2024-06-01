@@ -22,7 +22,7 @@ function getDataFromFormData(
     name: formData.get('name') as string,
     amount: factor * Number(formData.get('amount')),
     currency,
-    accountId: formData.get('account') as string,
+    bankAccountId: formData.get('bankAccountId') as string,
     categoryId: formData.get('category') as string,
     date: new Date(formData.get('date') as string),
     userId,
@@ -33,7 +33,7 @@ export async function createNewRecord(_: any, formData: FormData) {
   await dbConnect();
 
   const userId = await getUserId();
-  const bankId = formData.get('account') as string;
+  const bankId = formData.get('bankAccountId') as string;
 
   const bank = await BankAccount.findById(bankId);
 

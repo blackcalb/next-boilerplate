@@ -2,6 +2,7 @@ import { cn } from '@/utils/cn';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  name: string;
   helper?: string | React.ReactNode;
   errors?: string[];
 }

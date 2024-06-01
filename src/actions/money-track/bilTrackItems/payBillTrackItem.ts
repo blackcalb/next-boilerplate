@@ -40,7 +40,7 @@ export async function payBillTrackItem(_: any, formData: FormData) {
   // TODO: extract this to a function nad update places, because here we are leveaing budgets out
   await createMovement(
     {
-      accountId: currentBill.bankAccountId,
+      bankAccountId: currentBill.bankAccountId,
       categoryId: currentBill.categoryId,
       date: new Date(),
       name: `Payment for ${currentBill.name}`,

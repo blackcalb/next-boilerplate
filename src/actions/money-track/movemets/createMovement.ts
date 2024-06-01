@@ -8,7 +8,7 @@ import { updateBalanceAccount } from '../bankAccounts/updateBalance';
 import updateBudgetUsedAmount from '../budgets/updateBudgets';
 
 interface ICreateMovement {
-  accountId: string | ObjectId;
+  bankAccountId: string | ObjectId;
   date: Date;
   name: string;
   amount: number;
@@ -34,7 +34,7 @@ export default async function createMovement(
   const actions = [];
 
   if (options?.updateAccountBalance) {
-    actions.push(updateBalanceAccount(movement.accountId, movement.amount));
+    actions.push(updateBalanceAccount(movement.bankAccountId, movement.amount));
   }
   if (options?.updateBudgets && movement.categoryId) {
     actions.push(

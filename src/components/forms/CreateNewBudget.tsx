@@ -1,5 +1,7 @@
 'use client';
 
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
@@ -7,7 +9,10 @@ import { useFormState } from 'react-dom';
 import { createNewBudget } from '@/actions/money-track/add/budget';
 import type { ICategoryFlatDocument } from '@/models/money-track/Categories';
 
-import FormButton from '../buttons/FormButton';
+import FormButtonIcon from '../buttons/FormButtonIcon';
+import Checkbox from '../inputs/checkbox';
+import Input from '../inputs/input';
+import Select from '../inputs/select';
 
 interface CreateNewBudgetProps {
   categories: ICategoryFlatDocument[];
@@ -27,53 +32,59 @@ export default function CreateNewBudget({
 
   return (
     <form action={formAction}>
-      <label htmlFor="name">
-        Name
-        <input type="text" id="name" name="name" required />
-      </label>
+      <div className="flex flex-col gap-2">
+        <Input name="name" label="Name" type="text" required />
+        <Input
+          name="from"
+          label="From"
+          type="date"
+          required
+          defaultValue={
+            new Date(new Date().getFullYear(), new Date().getMonth(), 2)
+              .toISOString()
+              .split('T')[0]
+          }
+        />
+        <Input
+          name="to"
+          label="To"
+          type="date"
+          required
+          defaultValue={
+            new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+              .toISOString()
+              .split('T')[0]
+          }
+        />
 
-      <label htmlFor="from">
-        From
-        <input type="date" id="from" name="from" required />
-      </label>
-      <label htmlFor="to">
-        To
-        <input type="date" id="to" name="to" required />
-      </label>
-
-      <label htmlFor="category">
-        Category
-        <select name="category" id="category" required multiple>
-          {categories.map((category) => (
-            <option
-              key={category._id.toString()}
-              value={category._id.toString()}
-            >
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label htmlFor="budget">
-        budget{' '}
-        <input
+        <Select
+          name="category"
+          label="Category"
+          required
+          options={categories.map((category) => ({
+            value: category._id.toString(),
+            label: category.name,
+          }))}
+        />
+        <Input
+          name="budget"
+          label="budget"
           type="number"
           min={0}
           step={0.01}
-          id="budget"
-          name="budget"
           required
         />
-      </label>
-      <label htmlFor="addPreviousCreatedRecords">
-        Add Previous Created Records?
-        <input
-          type="checkbox"
-          id="addPreviousCreatedRecords"
+
+        <Checkbox
           name="addPreviousCreatedRecords"
+          label="Add Previous Created Records?"
         />
-      </label>
-      <FormButton>Create New Account</FormButton>
+
+        <FormButtonIcon
+          icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
+          className="mx-auto"
+        />
+      </div>
     </form>
   );
 }

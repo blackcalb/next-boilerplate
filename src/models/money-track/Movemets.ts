@@ -8,7 +8,7 @@ import mongoose, {
 import { CategoryType } from './Categories';
 
 interface IMovement extends Document {
-  accountId: ObjectId;
+  bankAccountId: ObjectId;
   date: Date;
   name: string;
   type: CategoryType;
@@ -26,7 +26,7 @@ export type IMovementFlatDocument = FlattenMaps<IMovement> &
   }>;
 
 const MovementSchema = new Schema<IMovement>({
-  accountId: {
+  bankAccountId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },

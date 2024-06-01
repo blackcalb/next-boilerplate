@@ -10,7 +10,10 @@ export default async function AddIncomePage() {
   const banks = await getAccounts();
 
   return (
-    <Modal title={<Typography variant="h2">Add new Expense</Typography>}>
+    <Modal
+      title={<Typography variant="h2">Add new Expense</Typography>}
+      className="w-1/3"
+    >
       <CreateNewRecord
         categories={categories}
         type={CategoryType.Expense}

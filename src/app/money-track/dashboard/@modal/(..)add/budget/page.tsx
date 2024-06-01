@@ -7,7 +7,10 @@ export default async function AddAccountPage() {
   const categories = await getCategoriesByType('expense');
 
   return (
-    <Modal title={<Typography variant="h2">Add new Budget</Typography>}>
+    <Modal
+      title={<Typography variant="h2">Add new Budget</Typography>}
+      className="w-1/3"
+    >
       <CreateNewBudget categories={categories} />
     </Modal>
   );

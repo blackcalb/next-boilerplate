@@ -36,7 +36,7 @@ export async function createNewAccount(_: any, formData: FormData) {
 
   if (data.balance > 0) {
     await createMovement({
-      accountId: saveAccount._id as ObjectId,
+      bankAccountId: saveAccount._id as ObjectId,
       amount: data.balance,
       currency: data.currency,
       type: CategoryType.Deposit,

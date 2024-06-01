@@ -1,16 +1,21 @@
 'use client';
 
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
 import { createNewRecord } from '@/actions/money-track/add/record';
-import FormButton from '@/components/buttons/FormButton';
 import type { IBankAccountFlatDocument } from '@/models/money-track/BankAcounts';
 import type {
   CategoryType,
   ICategoryFlatDocument,
 } from '@/models/money-track/Categories';
+
+import FormButtonIcon from '../buttons/FormButtonIcon';
+import Input from '../inputs/input';
+import Select from '../inputs/select';
 
 interface CreateNewRecordProps {
   bankAccounts: IBankAccountFlatDocument[];
@@ -33,61 +38,60 @@ export default function CreateNewRecord({
   }, [router, state?.status]);
 
   return (
-    <form className="flex flex-col" action={formAction}>
+    <form className="flex w-full flex-col gap-2" action={formAction}>
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="redirect" value="/money-track/dashboard" />
-      <label htmlFor="name">
-        Subject
-        <input type="text" id="name" name="name" required />
-      </label>
-      {state?.error?.name && <p>{state.error.name._errors.join(', ')}</p>}
-      <label htmlFor="amount">
-        amount{' '}
-        <input
-          type="number"
-          min={0}
-          step={0.01}
-          id="amount"
-          name="amount"
-          required
-        />
-      </label>
-      {state?.error?.amount && <p>{state.error.amount._errors.join(', ')}</p>}
-      {state?.error?.amount && <p>{state.error.amount?._errors.join(', ')}</p>}
-      <label htmlFor="category">
-        Category
-        <select name="category" id="category" required>
-          {categories.map((category) => (
-            <option
-              key={category._id.toString()}
-              value={category._id.toString()}
-            >
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      {state?.error?.categoryId && (
-        <p>{state.error.categoryId._errors.join(', ')}</p>
-      )}
-      <label htmlFor="account">
-        <select name="account" id="account" required>
-          {bankAccounts.map((account) => (
-            <option key={account._id.toString()} value={account._id.toString()}>
-              {account.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      {state?.error?.accountId && (
-        <p>{state.error.accountId._errors.join(', ')}</p>
-      )}
-      <label htmlFor="date">
-        Date
-        <input type="date" id="date" name="date" required />
-      </label>
-      {state?.error?.date && <p>{state.error.date._errors.join(', ')}</p>}
-      <FormButton>Crear</FormButton>
+      <Input
+        name="name"
+        label="Subject"
+        required
+        errors={state?.error?.name?._errors}
+      />
+
+      <Input
+        name="amount"
+        type="number"
+        min={0}
+        step={0.01}
+        label="Amount"
+        required
+        errors={state?.error?.amount?._errors}
+      />
+
+      <Select
+        name="category"
+        label="Category"
+        required
+        options={categories.map((category) => ({
+          value: category._id.toString(),
+          label: category.name,
+        }))}
+        errors={state?.error?.categoryId?._errors}
+      />
+
+      <Select
+        name="bankAccountId"
+        label="Bank Account"
+        required
+        options={bankAccounts.map((bankAccount) => ({
+          value: bankAccount._id.toString(),
+          label: bankAccount.name,
+        }))}
+        errors={state?.error?.bankAccountId?._errors}
+      />
+
+      <Input
+        type="date"
+        name="date"
+        label="Date"
+        required
+        errors={state?.error?.date?._errors}
+      />
+
+      <FormButtonIcon
+        icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
+        className="mx-auto"
+      />
     </form>
   );
 }

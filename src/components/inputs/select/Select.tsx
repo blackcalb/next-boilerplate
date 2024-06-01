@@ -8,23 +8,30 @@ interface SelectOption {
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   options: SelectOption[];
-  id: string;
+  name: string;
+  id?: string;
   errors?: string[];
 }
 
 export function Select({
   className,
-  id,
   label,
+  name,
   options,
   errors,
+  id,
   ...props
 }: Readonly<SelectProps>) {
   return (
     <>
       <label htmlFor={id}>
         {label}
-        <select id={id} className={cn('p-4 w-full', className)} {...props}>
+        <select
+          id={id ?? name}
+          name={name}
+          className={cn('p-4 w-full', className)}
+          {...props}
+        >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
