@@ -3,7 +3,7 @@
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 
 import { createNewRecord } from '@/actions/money-track/add/record';
@@ -30,12 +30,18 @@ export default function CreateNewRecord({
 }: Readonly<CreateNewRecordProps>) {
   const [state, formAction] = useFormState(createNewRecord, null);
   const router = useRouter();
+  const refNameInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (state?.status === 'success') {
       router.push('/money-track/dashboard');
     }
   }, [router, state?.status]);
+
+  // focus on first input when load
+  useLayoutEffect(() => {
+    refNameInput.current?.focus();
+  }, []);
 
   return (
     <form className="flex w-full flex-col gap-2" action={formAction}>
@@ -46,6 +52,7 @@ export default function CreateNewRecord({
         label="Subject"
         required
         errors={state?.error?.name?._errors}
+        ref={refNameInput}
       />
 
       <Input

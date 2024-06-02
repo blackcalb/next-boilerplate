@@ -3,6 +3,7 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons/faClose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -23,9 +24,25 @@ export function Modal({
 }: Readonly<ModalProps>) {
   const router = useRouter();
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     router.back();
-  };
+  }, [router]);
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        goBack();
+      }
+    },
+    [goBack],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <dialog

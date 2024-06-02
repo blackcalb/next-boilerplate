@@ -1,3 +1,5 @@
+import React, { forwardRef, type ForwardRefRenderFunction } from 'react';
+
 import { cn } from '@/utils/cn';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -5,18 +7,13 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   helper?: string | React.ReactNode;
   errors?: string[];
+  ref?: React.Ref<HTMLInputElement>;
 }
 
-export function Input({
-  className,
-  label,
-  placeholder,
-  id,
-  name,
-  helper,
-  errors,
-  ...props
-}: Readonly<InputProps>) {
+const InputComponent: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+  { className, label, placeholder, id, name, helper, errors, ...props },
+  ref,
+) => {
   return (
     <>
       <label htmlFor={id} aria-label={label}>
@@ -26,6 +23,7 @@ export function Input({
           id={id ?? name}
           name={name}
           placeholder={placeholder || label}
+          ref={ref}
         />
       </label>
       {!!helper && helper}
@@ -38,4 +36,6 @@ export function Input({
       </div>
     </>
   );
-}
+};
+
+export const Input = forwardRef(InputComponent);

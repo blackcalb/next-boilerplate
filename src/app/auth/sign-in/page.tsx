@@ -10,7 +10,7 @@ export default function SignInPage() {
   return (
     <div className="flex size-full items-center justify-center">
       <Card
-        title="Sign In"
+        header="Sign In"
         className="w-full max-w-[30rem] sm:w-3/4 lg:w-1/2 xl:w-1/3"
       >
         <div className="flex flex-col gap-8">

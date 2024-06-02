@@ -11,7 +11,7 @@ export default async function BankPage() {
   }
 
   return (
-    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+    <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
       {bankAccounts.map((bankAccount) => (
         <BankAccountItem
           key={bankAccount._id.toString()}

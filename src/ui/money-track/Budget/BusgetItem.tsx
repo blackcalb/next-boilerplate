@@ -24,7 +24,7 @@ export default function BudgetItem({ budget }: Readonly<BudgetItemProps>) {
     >
       <div className="flex-1">
         <Typography className="text-xl font-bold">{budget.name}</Typography>
-        <Typography>
+        <Typography className="hidden md:inline-flex">
           {Intl.DateTimeFormat('en-US', {
             dateStyle: 'medium',
           }).format(budget.from)}{' '}

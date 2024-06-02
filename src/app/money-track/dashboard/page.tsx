@@ -1,3 +1,5 @@
+import { AddKeyboardShortcuts } from './AddKeyboardShortcuts';
+
 export default function MoneyTrackPage() {
-  return null;
+  return <AddKeyboardShortcuts />;
 }
