@@ -7,7 +7,7 @@ import mongoose, {
 
 import { CategoryType } from './Categories';
 
-interface IMovement extends Document {
+export interface IMovement extends Document {
   bankAccountId: ObjectId;
   date: Date;
   name: string;
