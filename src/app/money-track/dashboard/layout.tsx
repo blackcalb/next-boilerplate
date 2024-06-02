@@ -25,7 +25,6 @@ export default function BudgetsLayout({
 }: Readonly<BudgetsLayoutProps>) {
   return (
     <main className="size-full">
-      {actions}
       <div className="my-10 grid w-full grid-cols-1 items-stretch gap-10 px-10 lg:grid-cols-2">
         {incomes}
         {expenses}
@@ -35,6 +34,7 @@ export default function BudgetsLayout({
       <div className="grid grid-cols-3 gap-8 px-12">
         {billTrack}
         {billTrackPlanningNextMonth}
+        {actions}
       </div>
 
       {children}

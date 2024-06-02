@@ -85,6 +85,14 @@ export default function CreateNewRecord({
         name="date"
         label="Date"
         required
+        defaultValue={
+          new Date(
+            new Date().getTime() +
+              (480 + new Date().getTimezoneOffset()) * 60 * 1000,
+          )
+            .toISOString()
+            .split('T')[0]
+        }
         errors={state?.error?.date?._errors}
       />
 

@@ -11,7 +11,7 @@ import BillTrack, {
 // next month:1,
 // ...
 
-export interface BillMonthWithCategory extends IBillTrack {
+interface BillMonthWithCategory extends IBillTrack {
   category: {
     name: string;
   };

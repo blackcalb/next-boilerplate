@@ -33,5 +33,6 @@
   "i18n-ally.keystyle": "nested",
   "[postcss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "findUnusedExports.detectCircularImports": true
 }

@@ -5,10 +5,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 
-import { MenuWrapper } from '@/components/menu/Menu';
-import { Navigation } from '@/components/navigation';
-import Sidemenu from '@/components/ui/menu/Sidemenu';
-import { MenuProvider } from '@/hooks/context/menu';
 import { cn } from '@/utils/cn';
 
 import Providers from './providers';
@@ -36,16 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <ThemeProvider enableSystem attribute="class">
-            <MenuProvider>
-              <Navigation />
-
-              <div className="flex flex-1">
-                <MenuWrapper>
-                  <Sidemenu />
-                </MenuWrapper>
-                {children}
-              </div>
-            </MenuProvider>
+            <div className="flex flex-1">{children}</div>
           </ThemeProvider>
         </Providers>
       </body>
