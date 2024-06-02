@@ -13,7 +13,7 @@ export default function BudgetLayout({
       header={
         <div className="flex w-full justify-between">
           <Typography className="text-xl font-bold">Accounts</Typography>
-          <div className="mr-8 flex gap-4">
+          <div className="flex gap-4">
             <Link href="/money-track/accounts/transfer-between-accounts">
               <FontAwesomeIcon icon={faShuffle} size="2x" />
             </Link>

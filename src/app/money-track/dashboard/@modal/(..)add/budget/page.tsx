@@ -9,7 +9,7 @@ export default async function AddAccountPage() {
   return (
     <Modal
       title={<Typography variant="h2">Add new Budget</Typography>}
-      className="w-1/3"
+      className="mx-2 w-full md:w-1/2 lg:w-1/3 xl:w-1/4"
     >
       <CreateNewBudget categories={categories} />
     </Modal>

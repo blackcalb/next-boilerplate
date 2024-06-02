@@ -12,7 +12,7 @@ export default async function AddIncomePage() {
   return (
     <Modal
       title={<Typography variant="h2">Add new Expense</Typography>}
-      className="w-1/3"
+      className="mx-2 w-full md:w-1/2 lg:w-1/3 xl:w-1/4"
     >
       <CreateNewRecord
         categories={categories}

@@ -61,7 +61,7 @@ export default function BudgetItem({ budget }: Readonly<BudgetItemProps>) {
         </Typography>
         <Typography className="text-sm"> (used)</Typography>
       </div>
-      <div className="grid grid-cols-10 grid-rows-10">
+      <div className="hidden sm:grid sm:grid-cols-10 sm:grid-rows-10">
         {new Array(100)
           .fill(0)
           .map((_, index) => index + 1)

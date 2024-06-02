@@ -94,7 +94,7 @@ export default function CreateNewRecord({
         required
         defaultValue={
           new Date(
-            new Date().getTime() +
+            new Date().getTime() -
               (480 + new Date().getTimezoneOffset()) * 60 * 1000,
           )
             .toISOString()
@@ -104,8 +104,9 @@ export default function CreateNewRecord({
       />
 
       <FormButtonIcon
-        icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
+        aria-label={`Create a new ${type}`}
         className="mx-auto"
+        icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
       />
     </form>
   );

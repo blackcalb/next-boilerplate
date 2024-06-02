@@ -30,31 +30,40 @@ export function Card({
         'px-6 py-4',
         'bg-blue-100/10 backdrop-blur-sm',
         'shadow-lg',
+        'overflow-hidden',
         !isOpen && 'self-start',
         className,
       )}
     >
-      <div className="mb-6 flex items-center gap-2">
-        <FontAwesomeIcon
-          icon={faChevronCircleDown}
-          onClick={() => setIsOpen((p) => !p)}
-          rotation={isOpen ? undefined : 180}
-          size="xl"
-        />
+      <div className="flex items-center gap-2">
+        <motion.div
+          initial={isOpen ? 'open' : 'closed'}
+          variants={{
+            open: { rotate: 180 },
+            closed: { rotate: 0 },
+          }}
+          animate={isOpen ? 'open' : 'closed'}
+        >
+          <FontAwesomeIcon
+            icon={faChevronCircleDown}
+            onClick={() => setIsOpen((p) => !p)}
+            // rotation={isOpen ? 180 : undefined}
+            size="xl"
+          />
+        </motion.div>
         {header}
       </div>
 
       <motion.div
         initial={isOpen ? 'open' : 'closed'}
         variants={{
-          open: { opacity: 1, height: 'auto' },
-          closed: { opacity: 0, height: 0 },
+          open: { opacity: 1, height: 'auto', marginTop: '1rem' },
+          closed: { opacity: 0, height: 0, marginTop: 0 },
         }}
         animate={isOpen ? 'open' : 'closed'}
       >
         {children}
       </motion.div>
-      {/* {isOpen && children} */}
     </motion.div>
   );
 }

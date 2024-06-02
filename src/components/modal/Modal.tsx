@@ -3,8 +3,9 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons/faClose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
+import useTrapFocus from '@/hooks/use-trap-focus';
 import { cn } from '@/utils/cn';
 
 import BaseButton from '../buttons/BaseButton';
@@ -23,6 +24,8 @@ export function Modal({
   primaryAction,
 }: Readonly<ModalProps>) {
   const router = useRouter();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  useTrapFocus(dialogRef);
 
   const goBack = useCallback(() => {
     router.back();
@@ -52,6 +55,7 @@ export function Modal({
         'flex size-full items-center justify-center',
         'overflow-auto bg-white/20  backdrop-blur',
       )}
+      ref={dialogRef}
     >
       <div
         className={cn(
