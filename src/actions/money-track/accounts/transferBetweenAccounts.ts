@@ -60,7 +60,7 @@ export async function transferBetweenAccountAction(_: any, formData: FormData) {
   await Promise.all([
     Movement.insertMany([
       {
-        accountId: data.fromAccountId,
+        bankAccountId: data.fromAccountId,
         date: new Date(),
         name: `Transfer to ${toAccount.name}`,
         amount: -data.amount,
@@ -69,7 +69,7 @@ export async function transferBetweenAccountAction(_: any, formData: FormData) {
         userId,
       },
       {
-        accountId: data.toAccountId,
+        bankAccountId: data.toAccountId,
         date: new Date(),
         name: `Transfer from ${fromAccount.name}`,
         amount: data.amount,
