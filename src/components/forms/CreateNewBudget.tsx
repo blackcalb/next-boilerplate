@@ -65,6 +65,7 @@ export default function CreateNewBudget({
             value: category._id.toString(),
             label: category.name,
           }))}
+          multiple
         />
         <Input
           name="budget"

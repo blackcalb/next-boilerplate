@@ -1,5 +1,6 @@
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 
 import Typography from '@/components/Typography';
 import type { IBudgetFlatDocument } from '@/models/money-track/Budgets';
@@ -23,7 +24,9 @@ export default function BudgetItem({ budget }: Readonly<BudgetItemProps>) {
       )}
     >
       <div className="flex-1">
-        <Typography className="text-xl font-bold">{budget.name}</Typography>
+        <Link href={`/money-track/budgets/${budget._id}`}>
+          <Typography className="text-xl font-bold">{budget.name}</Typography>
+        </Link>
         <Typography className="hidden md:inline-flex">
           {Intl.DateTimeFormat('en-US', {
             dateStyle: 'medium',
