@@ -15,22 +15,20 @@ import BaseButton from '@/components/buttons/BaseButton';
 import FormButton from '@/components/buttons/FormButton';
 import Input from '@/components/inputs/input';
 import Select from '@/components/inputs/select';
-import type { IBankAccountClient } from '@/models/money-track/BankAcounts';
-import type { IClientCategory } from '@/models/money-track/Categories';
+import type { Option } from '@/types/moneyTrack';
 import { cn } from '@/utils/cn';
-import mapDocumentToSelectOption from '@/utils/mapDocumentToSelectOption';
 
 import styles from './AddNewItemForm.module.css';
 // import styles from './AddNewItemForm.module.css'
 
 interface AddNewItemFormProps {
-  bankAccounts: IBankAccountClient[];
-  expenseCategories: IClientCategory[];
+  bankAccountsOptions: Option[];
+  categoryOptions: Option[];
 }
 
 export function AddNewItemForm({
-  bankAccounts,
-  expenseCategories,
+  bankAccountsOptions,
+  categoryOptions,
 }: Readonly<AddNewItemFormProps>) {
   const [adding, setAdding] = useState(false);
   const [status, formAction] = useFormState(billTrackItem, null);
@@ -136,14 +134,14 @@ export function AddNewItemForm({
               name="bankAccountId"
               id="bankAccountId"
               label="Bank account"
-              options={bankAccounts.map(mapDocumentToSelectOption)}
+              options={bankAccountsOptions}
               errors={status?.error?.bankAccountId?._errors}
             />
             <Select
               name="categoryId"
               id="categoryId"
               label="Category"
-              options={expenseCategories.map(mapDocumentToSelectOption)}
+              options={categoryOptions}
               errors={status?.error?.categoryId?._errors}
             />
 

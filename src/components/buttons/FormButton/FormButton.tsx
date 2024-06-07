@@ -1,5 +1,6 @@
 'use client';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useFormStatus } from 'react-dom';
 
@@ -24,7 +25,8 @@ export const FormButton = ({
       disabled={disabled || pending}
       className={cn('flex gap-2', className)}
     >
-      <div className={cn(pending && 'animate-spin')}>{children}</div>
+      {children}
+      {pending && <FontAwesomeIcon icon="spinner" spin />}
     </BaseButton>
   );
 };

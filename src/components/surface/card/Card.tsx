@@ -12,6 +12,7 @@ interface CardProps {
   header?: React.ReactNode;
   className?: string;
   initialOpen?: boolean;
+  doNotMinimize?: boolean;
 }
 
 export function Card({
@@ -19,8 +20,9 @@ export function Card({
   header,
   className,
   initialOpen = false,
+  doNotMinimize = false,
 }: Readonly<CardProps>) {
-  const [isOpen, setIsOpen] = useState(initialOpen);
+  const [isOpen, setIsOpen] = useState(initialOpen || doNotMinimize);
 
   return (
     <motion.div
@@ -37,21 +39,23 @@ export function Card({
       )}
     >
       <div className="flex items-center gap-2">
-        <motion.div
-          initial={isOpen ? 'open' : 'closed'}
-          variants={{
-            open: { rotate: 180 },
-            closed: { rotate: 0 },
-          }}
-          animate={isOpen ? 'open' : 'closed'}
-        >
-          <FontAwesomeIcon
-            icon={faChevronCircleDown}
-            onClick={() => setIsOpen((p) => !p)}
-            // rotation={isOpen ? 180 : undefined}
-            size="xl"
-          />
-        </motion.div>
+        {!doNotMinimize && (
+          <motion.div
+            initial={isOpen ? 'open' : 'closed'}
+            variants={{
+              open: { rotate: 180 },
+              closed: { rotate: 0 },
+            }}
+            animate={isOpen ? 'open' : 'closed'}
+          >
+            <FontAwesomeIcon
+              icon={faChevronCircleDown}
+              onClick={() => setIsOpen((p) => !p)}
+              // rotation={isOpen ? 180 : undefined}
+              size="xl"
+            />
+          </motion.div>
+        )}
         {header}
       </div>
 

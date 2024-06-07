@@ -3,8 +3,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from 'next-themes';
 
+import Header from '@/components/header';
 import { cn } from '@/utils/cn';
 
 import Providers from './providers';
@@ -31,9 +31,10 @@ export default function RootLayout({
         )}
       >
         <Providers>
-          <ThemeProvider enableSystem attribute="class">
-            <div className="flex flex-1">{children}</div>
-          </ThemeProvider>
+          <div className="sticky top-0 z-10">
+            <Header />
+          </div>
+          <div className="flex-1">{children}</div>
         </Providers>
       </body>
     </html>

@@ -2,17 +2,15 @@ import Link from 'next/link';
 
 import Divider from '@/components/divider';
 import Card from '@/components/surface/card';
+import ContentWrapper from '@/components/surface/content-wrapper';
 import Typography from '@/components/Typography';
 import { SignInCredentialForm } from '@/components/ui/auth/SignIn/SignInCredentialForm';
 import { SignInGithubForm } from '@/components/ui/auth/SignIn/SignInGithubForm';
 
 export default function SignInPage() {
   return (
-    <div className="flex size-full items-center justify-center">
-      <Card
-        header="Sign In"
-        className="w-full max-w-[30rem] sm:w-3/4 lg:w-1/2 xl:w-1/3"
-      >
+    <ContentWrapper>
+      <Card header="Sign In" doNotMinimize>
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4 ">
             <SignInCredentialForm />
@@ -31,6 +29,6 @@ export default function SignInPage() {
           </div>
         </div>
       </Card>
-    </div>
+    </ContentWrapper>
   );
 }
