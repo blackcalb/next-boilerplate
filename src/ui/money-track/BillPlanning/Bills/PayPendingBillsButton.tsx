@@ -57,6 +57,7 @@ export function PayButtonPendingBills({
                   name="amount"
                   defaultValue={defaultAmount}
                   errors={status?.errors?.amount?._errors}
+                  className="dark:text-white"
                 />
               </div>
               <FormButton color="dark">

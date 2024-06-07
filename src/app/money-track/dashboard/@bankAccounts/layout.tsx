@@ -14,7 +14,7 @@ export default function BudgetLayout({
         <div className="flex w-full justify-between">
           <Typography className="text-xl font-bold">Accounts</Typography>
           <div className="flex gap-4">
-            <Link href="/money-track/accounts/transfer-between-accounts">
+            <Link href="/money-track/accounts/transfer-between-bank-accounts">
               <FontAwesomeIcon icon={faShuffle} size="2x" />
             </Link>
             <Link href="/money-track/add/account">

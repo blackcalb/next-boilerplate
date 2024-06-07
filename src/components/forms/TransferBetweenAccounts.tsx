@@ -2,8 +2,13 @@
 
 'use client';
 
-import { faShuffle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMoneyBillTransfer,
+  faShuffle,
+  faSquareCaretLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
@@ -11,7 +16,7 @@ import { useFormState } from 'react-dom';
 import { transferBetweenAccountAction } from '@/actions/money-track/accounts/transferBetweenAccounts';
 import type { IBankAccountFlatDocument } from '@/models/money-track/BankAcounts';
 
-import FormButton from '../buttons/FormButton';
+import FormButtonIcon from '../buttons/FormButtonIcon';
 import Input from '../inputs/input';
 import Select from '../inputs/select';
 
@@ -82,10 +87,21 @@ export default function TransferBetweenAccounts({
               : undefined
           }
         />
-        <FormButton kind="contained" className="self-center p-2">
-          Transfer
-        </FormButton>
-
+        <div className="flex items-center justify-center gap-4">
+          <div>
+            <FormButtonIcon
+              icon={<FontAwesomeIcon icon={faMoneyBillTransfer} size="3x" />}
+              className="text-primary"
+            />
+          </div>
+          <Link href="/money-track/dashboard" aria-label="Back to dashboard">
+            <FontAwesomeIcon
+              icon={faSquareCaretLeft}
+              className="text-primary"
+              size="3x"
+            />
+          </Link>
+        </div>
         {state?.error && typeof state.error === 'string' && (
           <p>{state.error}</p>
         )}

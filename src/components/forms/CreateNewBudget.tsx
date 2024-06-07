@@ -1,13 +1,17 @@
 'use client';
 
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSquareCaretLeft,
+  faSquarePlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
 import { createNewBudget } from '@/actions/money-track/add/budget';
-import type { ICategoryFlatDocument } from '@/models/money-track/Categories';
+import type { Option } from '@/types/moneyTrack';
 
 import FormButtonIcon from '../buttons/FormButtonIcon';
 import Checkbox from '../inputs/checkbox';
@@ -15,11 +19,11 @@ import Input from '../inputs/input';
 import Select from '../inputs/select';
 
 interface CreateNewBudgetProps {
-  categories: ICategoryFlatDocument[];
+  categoriesOptions: Option[];
 }
 
 export default function CreateNewBudget({
-  categories,
+  categoriesOptions,
 }: Readonly<CreateNewBudgetProps>) {
   const [state, formAction] = useFormState(createNewBudget, null);
   const router = useRouter();
@@ -61,10 +65,7 @@ export default function CreateNewBudget({
           name="category"
           label="Category"
           required
-          options={categories.map((category) => ({
-            value: category._id.toString(),
-            label: category.name,
-          }))}
+          options={categoriesOptions}
           multiple
         />
         <Input
@@ -80,11 +81,21 @@ export default function CreateNewBudget({
           name="addPreviousCreatedRecords"
           label="Add Previous Created Records?"
         />
-
-        <FormButtonIcon
-          icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
-          className="mx-auto"
-        />
+        <div className="flex items-center justify-center gap-4">
+          <div>
+            <FormButtonIcon
+              icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
+              className="mx-auto"
+            />
+          </div>
+          <Link href="/money-track/dashboard" aria-label="Back to dashboard">
+            <FontAwesomeIcon
+              icon={faSquareCaretLeft}
+              className="text-primary"
+              size="3x"
+            />
+          </Link>
+        </div>
       </div>
     </form>
   );

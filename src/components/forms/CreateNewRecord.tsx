@@ -1,31 +1,32 @@
 'use client';
 
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSquareCaretLeft,
+  faSquarePlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 
 import { createNewRecord } from '@/actions/money-track/add/record';
-import type { IBankAccountFlatDocument } from '@/models/money-track/BankAcounts';
-import type {
-  CategoryType,
-  ICategoryFlatDocument,
-} from '@/models/money-track/Categories';
+import type { CategoryType } from '@/models/money-track/Categories';
+import type { Option } from '@/types/moneyTrack';
 
 import FormButtonIcon from '../buttons/FormButtonIcon';
 import Input from '../inputs/input';
 import Select from '../inputs/select';
 
 interface CreateNewRecordProps {
-  bankAccounts: IBankAccountFlatDocument[];
-  categories: ICategoryFlatDocument[];
+  bankAccountOptions: Option[];
+  categoriesOptions: Option[];
   type: CategoryType;
 }
 
 export default function CreateNewRecord({
-  bankAccounts,
-  categories,
+  bankAccountOptions,
+  categoriesOptions,
   type,
 }: Readonly<CreateNewRecordProps>) {
   const [state, formAction] = useFormState(createNewRecord, null);
@@ -69,10 +70,7 @@ export default function CreateNewRecord({
         name="category"
         label="Category"
         required
-        options={categories.map((category) => ({
-          value: category._id.toString(),
-          label: category.name,
-        }))}
+        options={categoriesOptions}
         errors={state?.error?.categoryId?._errors}
       />
 
@@ -80,10 +78,7 @@ export default function CreateNewRecord({
         name="bankAccountId"
         label="Bank Account"
         required
-        options={bankAccounts.map((bankAccount) => ({
-          value: bankAccount._id.toString(),
-          label: bankAccount.name,
-        }))}
+        options={bankAccountOptions}
         errors={state?.error?.bankAccountId?._errors}
       />
 
@@ -103,11 +98,22 @@ export default function CreateNewRecord({
         errors={state?.error?.date?._errors}
       />
 
-      <FormButtonIcon
-        aria-label={`Create a new ${type}`}
-        className="mx-auto"
-        icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
-      />
+      <div className="flex items-center justify-center gap-4">
+        <div>
+          <FormButtonIcon
+            aria-label={`Create a new ${type}`}
+            className="mx-auto"
+            icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
+          />
+        </div>
+        <Link href="/money-track/dashboard" aria-label="Back to dashboard">
+          <FontAwesomeIcon
+            icon={faSquareCaretLeft}
+            className="text-primary"
+            size="3x"
+          />
+        </Link>
+      </div>
     </form>
   );
 }

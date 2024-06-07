@@ -1,5 +1,11 @@
 'use client';
 
+import {
+  faSquareCaretLeft,
+  faSquarePlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
@@ -7,10 +13,10 @@ import { useFormState } from 'react-dom';
 import { createNewAccount } from '@/actions/money-track/add/account';
 import Input from '@/components/inputs/input';
 
-import FormButton from '../buttons/FormButton';
+import FormButtonIcon from '../buttons/FormButtonIcon';
 import Select from '../inputs/select';
 
-export default function CreateNewAccount() {
+export default function CreateNewBankAccount() {
   const [state, formAction] = useFormState(createNewAccount, null);
   const router = useRouter();
 
@@ -44,9 +50,21 @@ export default function CreateNewAccount() {
           ]}
         />
 
-        <FormButton kind="contained" className="self-center p-2">
-          Create New Account
-        </FormButton>
+        <div className="flex items-center justify-center gap-4">
+          <div>
+            <FormButtonIcon
+              icon={<FontAwesomeIcon icon={faSquarePlus} size="3x" />}
+              className="mx-auto"
+            />
+          </div>
+          <Link href="/money-track/dashboard" aria-label="Back to dashboard">
+            <FontAwesomeIcon
+              icon={faSquareCaretLeft}
+              className="text-primary"
+              size="3x"
+            />
+          </Link>
+        </div>
       </div>
     </form>
   );

@@ -60,7 +60,9 @@ export function Modal({
       <div
         className={cn(
           'm-auto flex flex-col gap-10',
-          'bg-black p-8 rounded-md',
+          'bg-white dark:bg-black p-8 rounded-md',
+          // 'border-black/20 dark:border-white border-2',
+          'shadow-md shadow-black/30 dark:shadow-white',
           className,
         )}
       >

@@ -25,6 +25,7 @@ export function Card({
   return (
     <motion.div
       className={cn(
+        'w-full',
         'border-2 border-solid border-blue-200',
         'rounded-lg',
         'px-6 py-4',

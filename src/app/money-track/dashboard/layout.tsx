@@ -26,16 +26,20 @@ export default function BudgetsLayout({
   return (
     <main className="size-full">
       <div className="mx-auto max-w-screen-lg xl:max-w-screen-2xl">
-        <div className="grid w-full grid-cols-1 items-stretch gap-10 px-2 py-4 md:p-10 xl:grid-cols-2">
-          {incomes}
-          {expenses}
-          {budgets}
-          {bankAccounts}
+        <div className="grid grid-cols-2 gap-10 px-2 py-4 md:p-10">
+          <div className="flex flex-col items-stretch justify-stretch gap-10">
+            {incomes}
+            {budgets}
+            {billTrack}
+          </div>
+
+          <div className="flex flex-col items-stretch justify-stretch gap-10">
+            {expenses}
+            {bankAccounts}
+            {billTrackPlanningNextMonth}
+          </div>
         </div>
-        <div className="grid grid-cols-1 gap-8 px-2 sm:px-8 lg:grid-cols-2">
-          {billTrack}
-          {billTrackPlanningNextMonth}
-        </div>
+
         {actions}
 
         {children}
