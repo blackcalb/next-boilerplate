@@ -1,6 +1,8 @@
 import './globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -30,6 +32,8 @@ export default function RootLayout({
           'bg-white dark:bg-black',
         )}
       >
+        <SpeedInsights />
+        <Analytics />
         <Providers>
           <div className="sticky top-0 z-10">
             <Header />
