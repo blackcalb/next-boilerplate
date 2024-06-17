@@ -19,7 +19,7 @@ const InputComponent: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
       <label htmlFor={id} aria-label={label}>
         <input
           {...props}
-          className={cn('p-4 w-full', className)}
+          className={cn('p-4 w-full text-black dark:text-white', className)}
           id={id ?? name}
           name={name}
           placeholder={placeholder || label}

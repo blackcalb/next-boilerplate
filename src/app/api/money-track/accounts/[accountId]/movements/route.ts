@@ -1,4 +1,4 @@
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import getUserId from '@/actions/auth/getUserId';
 import dbConnect from '@/lib/mongoose';
@@ -18,7 +18,6 @@ export async function GET(
     });
   }
 
-  // valid params
   const { searchParams } = req.nextUrl;
   // 0=current month, N=last n-1 months
   const period = Number(searchParams.get('period'));
@@ -44,13 +43,9 @@ export async function GET(
     });
   }
 
-  // get all records from the account from first day of the month until last day of the month
   const now = new Date();
-  // start is a Date from first day of period month ago
   const start = new Date(now.getFullYear(), now.getMonth() - period, 1);
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-
-  // query that get the total amount by type, for each diferent month/yr
 
   const movements: {
     _id: {
@@ -101,7 +96,5 @@ export async function GET(
 
   response.sort((a, b) => a.name.localeCompare(b.name));
 
-  return new Response(JSON.stringify(response), {
-    status: 200,
-  });
+  return NextResponse.json(response);
 }

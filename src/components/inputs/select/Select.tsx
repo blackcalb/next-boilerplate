@@ -29,7 +29,7 @@ export function Select({
         <select
           id={id ?? name}
           name={name}
-          className={cn('p-4 w-full', className)}
+          className={cn('p-4 w-full text-black dark:text-white', className)}
           {...props}
         >
           {options.map((option) => (

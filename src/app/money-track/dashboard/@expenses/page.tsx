@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import Typography from '@/components/Typography';
 import { CategoryType } from '@/models/money-track/Categories';
 import { getLastNMovements } from '@/queries/records/getLastNRecords';
@@ -16,6 +18,9 @@ export default async function ExpensesPage() {
       {movemets.map((movement) => (
         <MovementItem movement={movement} key={movement._id.toString()} />
       ))}
+      <Link href="/money-track/expenses">
+        <Typography className="py-4">View all</Typography>
+      </Link>
     </div>
   );
 }

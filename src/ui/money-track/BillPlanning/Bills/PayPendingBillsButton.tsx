@@ -4,7 +4,7 @@ import { faMoneyBill, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 
 import { payBillTrackItem } from '@/actions/money-track/bilTrackItems/payBillTrackItem';
@@ -23,6 +23,12 @@ export function PayButtonPendingBills({
 }: Readonly<PayButtonPendingBillsProps>) {
   const [isPaying, setIsPaying] = useState(false);
   const [status, formAction] = useFormState(payBillTrackItem, null);
+
+  useEffect(() => {
+    if (status?.status === 'success') {
+      setIsPaying(false);
+    }
+  }, [status?.status]);
 
   return (
     <>

@@ -1,16 +1,10 @@
-import type { ObjectId } from 'mongoose';
 import mongoose from 'mongoose';
 
 import getUserId from '@/actions/auth/getUserId';
 import dbConnect from '@/lib/mongoose';
 import type { CategoryType } from '@/models/money-track/Categories';
-import Movement, { type IMovement } from '@/models/money-track/Movemets';
-
-interface MovementsWithCategoryAndAccountName extends IMovement {
-  _id: ObjectId;
-  category: { name: string };
-  bankAccount: { name: string };
-}
+import Movement from '@/models/money-track/Movemets';
+import type { MovementsWithCategoryAndAccountName } from '@/ui/money-track/Movements/MovementItem';
 
 export async function getLastNMovements(
   type: CategoryType,
@@ -20,7 +14,7 @@ export async function getLastNMovements(
 
   const userId = await getUserId();
 
-  return Movement.aggregate([
+  const movements = await Movement.aggregate([
     {
       $match: {
         type,
@@ -38,7 +32,7 @@ export async function getLastNMovements(
         from: 'categories',
         localField: 'categoryId',
         foreignField: '_id',
-        pipeline: [{ $project: { _id: 0, name: 1 } }],
+        pipeline: [{ $project: { _id: 1, name: 1 } }],
         as: 'category',
       },
     },
@@ -50,7 +44,7 @@ export async function getLastNMovements(
         from: 'bankaccounts',
         localField: 'bankAccountId',
         foreignField: '_id',
-        pipeline: [{ $project: { _id: 0, name: 1 } }],
+        pipeline: [{ $project: { _id: 1, name: 1 } }],
         as: 'bankAccount',
       },
     },
@@ -58,4 +52,15 @@ export async function getLastNMovements(
       $unwind: '$bankAccount',
     },
   ]);
+
+  return movements.map((movement) => ({
+    ...movement,
+    _id: movement._id.toString(),
+    category: { ...movement.category, _id: movement.category._id.toString() },
+    bankAccount: {
+      ...movement.bankAccount,
+      _id: movement.bankAccount._id.toString(),
+    },
+    date: new Date(movement.date).toLocaleDateString(),
+  }));
 }
