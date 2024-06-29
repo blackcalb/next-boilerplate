@@ -6,7 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import Header from '@/components/header';
+import DarkModeButton from '@/components/buttons/DarkMode';
 import { cn } from '@/utils/cn';
 
 import Providers from './providers';
@@ -35,10 +35,10 @@ export default function RootLayout({
         <SpeedInsights />
         <Analytics />
         <Providers>
-          <div className="sticky top-0 z-10">
-            <Header />
-          </div>
           <div className="flex-1">{children}</div>
+          <div className="mx-auto py-4">
+            <DarkModeButton />
+          </div>
         </Providers>
       </body>
     </html>

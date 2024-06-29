@@ -4,13 +4,18 @@
 
 @layer base {
   :root {
-    --color-primary: 255 115 179;
-    --color-secondary: 111 114 185;
+    --color-primary: 102 45 140;
+    --color-secondary: 237 30 121;   
     --color-success: 0 255 0;
     --color-error: 255 0 0;
     --color-warning: 255 255 0;
     --color-info: 0 255 255;
     --color-light: 255 255 255;
     --color-dark: 0 0 0;
+  }
+  
+  .dark {
+    --color-primary: 212 20 90;
+    --color-secondary: 251 176 59;
   }
 }
