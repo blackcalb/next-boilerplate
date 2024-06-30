@@ -4,17 +4,18 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 
 export function DarkMode() {
   const { theme, setTheme } = useTheme();
 
-  const initialState = useMemo(() => {
-    return window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
-  }, []);
+  const initialState = 'dark';
+  // const initialState = useMemo(() => {
+  //   return window && window.matchMedia &&
+  //     window.matchMedia('(prefers-color-scheme: dark)').matches
+  //     ? 'dark'
+  //     : 'light';
+  // }, []);
 
   const handleSwitchTheme = useCallback(() => {
     if (theme === 'system') {

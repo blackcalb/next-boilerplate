@@ -5,6 +5,13 @@ interface IUser extends Document {
   email: string;
   image?: string;
   emailVerified: boolean;
+  options?: {
+    'money-track'?: {
+      dashboard?: {
+        income: boolean;
+      };
+    };
+  };
 }
 
 export type IUserFlatDocument = FlattenMaps<IUser> &
@@ -27,6 +34,22 @@ const UserSchema = new Schema<IUser>({
   emailVerified: {
     type: Boolean,
     default: false,
+  },
+  options: {
+    type: {
+      'money-track': {
+        type: {
+          dashboard: {
+            type: {
+              income: {
+                type: Boolean,
+                default: false,
+              },
+            },
+          },
+        },
+      },
+    },
   },
 });
 

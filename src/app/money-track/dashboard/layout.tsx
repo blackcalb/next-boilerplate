@@ -1,5 +1,7 @@
 import type React from 'react';
 
+import ContentWrapper from '@/components/surface/content-wrapper';
+
 interface BudgetsLayoutProps {
   children: React.ReactNode;
   incomes: React.ReactNode;
@@ -25,7 +27,7 @@ export default function BudgetsLayout({
 }: Readonly<BudgetsLayoutProps>) {
   return (
     <main className="size-full">
-      <div className="mx-auto max-w-screen-lg xl:max-w-screen-2xl">
+      <ContentWrapper>
         <div className="hidden gap-10 md:grid md:grid-cols-2 md:p-10">
           <div className="flex flex-col items-stretch justify-stretch gap-10">
             {incomes}
@@ -39,7 +41,7 @@ export default function BudgetsLayout({
             {billTrackPlanningNextMonth}
           </div>
         </div>
-        <div className="flex flex-col gap-10 px-2 py-4 md:hidden ">
+        <div className="flex flex-col gap-4 md:hidden ">
           {incomes}
           {expenses}
           {budgets}
@@ -51,7 +53,7 @@ export default function BudgetsLayout({
         {actions}
 
         {children}
-      </div>
+      </ContentWrapper>
       {modal}
     </main>
   );

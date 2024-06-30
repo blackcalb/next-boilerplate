@@ -112,7 +112,7 @@ export default function MovementItem<
         {Intl.NumberFormat('en-EU', {
           style: 'currency',
           currency: movement.currency,
-        }).format(-movement.amount)}
+        }).format(Math.abs(movement.amount))}
       </Typography>
       {allowEdit && (
         <div className="h-12 overflow-hidden">

@@ -13,6 +13,7 @@ interface CardProps {
   className?: string;
   initialOpen?: boolean;
   doNotMinimize?: boolean;
+  savePreference?: string;
 }
 
 export function Card({
@@ -21,8 +22,24 @@ export function Card({
   className,
   initialOpen = false,
   doNotMinimize = false,
+  savePreference,
 }: Readonly<CardProps>) {
   const [isOpen, setIsOpen] = useState(initialOpen || doNotMinimize);
+
+  const onChangeOpen = () => {
+    setIsOpen(!isOpen);
+    if (!savePreference) return;
+    fetch('/api/user/preferences', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        module: savePreference,
+        value: !isOpen,
+      }),
+    });
+  };
 
   return (
     <motion.div
@@ -30,7 +47,7 @@ export function Card({
         'w-full',
         'border-2 border-solid border-blue-200',
         'rounded-lg',
-        'px-6 py-4',
+        'px-2 py-2',
         'bg-blue-100/10 backdrop-blur-sm',
         'shadow-lg',
         'overflow-hidden',
@@ -50,8 +67,7 @@ export function Card({
           >
             <FontAwesomeIcon
               icon={faChevronCircleDown}
-              onClick={() => setIsOpen((p) => !p)}
-              // rotation={isOpen ? 180 : undefined}
+              onClick={onChangeOpen}
               size="xl"
             />
           </motion.div>
