@@ -8,7 +8,12 @@ interface IUser extends Document {
   options?: {
     'money-track'?: {
       dashboard?: {
-        income: boolean;
+        income?: boolean;
+        expense?: boolean;
+        budgets?: boolean;
+        bankAccounts?: boolean;
+        bills?: boolean;
+        billsNextMonth?: boolean;
       };
     };
   };
@@ -42,6 +47,26 @@ const UserSchema = new Schema<IUser>({
           dashboard: {
             type: {
               income: {
+                type: Boolean,
+                default: false,
+              },
+              expense: {
+                type: Boolean,
+                default: false,
+              },
+              budgets: {
+                type: Boolean,
+                default: false,
+              },
+              bankAccounts: {
+                type: Boolean,
+                default: false,
+              },
+              bills: {
+                type: Boolean,
+                default: false,
+              },
+              billsNextMonth: {
                 type: Boolean,
                 default: false,
               },

@@ -12,7 +12,6 @@ import MovementItem from '@/ui/money-track/Movements/MovementItem';
 export default async function IncomesPage() {
   const movemets = await getLastNMovements(CategoryType.Income, 5);
   const getPreferences = await getUserPreferences('money-track.dashboard');
-  console.log('🚀 ~ IncomesPage ~ getPreferences:', getPreferences);
 
   return (
     <Card
