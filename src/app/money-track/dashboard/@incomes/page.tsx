@@ -7,7 +7,7 @@ import Card from '@/components/surface/card';
 import Typography from '@/components/Typography';
 import { CategoryType } from '@/models/money-track/Categories';
 import { getLastNMovements } from '@/queries/records/getLastNRecords';
-import MovementItem from '@/ui/money-track/Movements/MovementItem';
+import MovementItemSummary from '@/ui/money-track/Movements/MovementItemSummary';
 
 export default async function IncomesPage() {
   const movemets = await getLastNMovements(CategoryType.Income, 5);
@@ -34,7 +34,10 @@ export default async function IncomesPage() {
           </div>
         )}
         {movemets.map((movement) => (
-          <MovementItem movement={movement} key={movement._id.toString()} />
+          <MovementItemSummary
+            movement={movement}
+            key={movement._id.toString()}
+          />
         ))}
       </div>
     </Card>

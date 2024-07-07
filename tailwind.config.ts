@@ -4,6 +4,7 @@ const config: Config = {
   darkMode: 'class',
   content: [
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components2/**/*.{js,ts,jsx,tsx,mdx}',
     './src/ui/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
@@ -23,6 +24,8 @@ const config: Config = {
         info: 'rgb(var(--color-info) / <alpha-value>)',
         light: 'rgb(var(--color-light) / <alpha-value>)',
         dark: 'rgb(var(--color-dark) / <alpha-value>)',
+
+        background: 'rgb(var(--color-background-primary) / <alpha-value>)',
       },
     },
   },

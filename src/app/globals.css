@@ -12,10 +12,14 @@
     --color-info: 0 255 255;
     --color-light: 255 255 255;
     --color-dark: 0 0 0;
+
+    --color-background-primary: 250 240 230;
   }
   
   .dark {
     --color-primary: 212 20 90;
     --color-secondary: 251 176 59;
+
+    --color-background-primary: 24 18 43;
   }
 }

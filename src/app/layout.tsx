@@ -29,7 +29,7 @@ export default function RootLayout({
         className={cn(
           inter.className,
           'size-full flex flex-col',
-          'bg-white dark:bg-black',
+          'bg-background',
         )}
       >
         <SpeedInsights />
