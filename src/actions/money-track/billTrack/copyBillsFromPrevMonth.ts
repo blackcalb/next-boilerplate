@@ -3,9 +3,11 @@
 import { revalidatePath } from 'next/cache';
 
 import getUserId from '@/actions/auth/getUserId';
+import dbConnect from '@/lib/mongoose';
 import BillTrack from '@/models/money-track/BillTrack';
 
 export async function copyBillsFromMonth(_: any, formData: FormData) {
+  dbConnect();
   const userId = await getUserId();
 
   const path = formData.get('path') as string;
