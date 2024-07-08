@@ -25,9 +25,7 @@ export async function POST(req: NextRequest) {
 
   await dbConnect();
   await User.findByIdAndUpdate(userId, {
-    options: {
-      [module]: value,
-    },
+    [`options.${module}`]: value,
   });
 
   return new Response(JSON.stringify({ message: 'Preferences updated' }));
