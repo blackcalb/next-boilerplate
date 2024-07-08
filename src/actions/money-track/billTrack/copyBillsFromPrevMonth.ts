@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import getUserId from '@/actions/auth/getUserId';
 import dbConnect from '@/lib/mongoose';
-import BillTrack from '@/models/money-track/BillTrack';
+import BillTrack, { BillTrackStatus } from '@/models/money-track/BillTrack';
 
 export async function copyBillsFromMonth(_: any, formData: FormData) {
   dbConnect();
@@ -28,6 +28,9 @@ export async function copyBillsFromMonth(_: any, formData: FormData) {
       $gte: new Date(year, month - 1, 1),
       $lt: new Date(year, month, 1),
     },
+    status: {
+      $ne: BillTrackStatus.Deleted,
+    },
   });
 
   const lastDayDate = new Date(Number(year), Number(month) + deltaMonths, 0);
@@ -38,6 +41,7 @@ export async function copyBillsFromMonth(_: any, formData: FormData) {
     delete newBill._id;
     newBill.date.setMonth(newBill.date.getMonth() + deltaMonths);
     newBill.date.setDate(Math.min(newBill.date.getDate(), lastDay));
+    newBill.status = BillTrackStatus.Pending;
     return newBill;
   });
 
