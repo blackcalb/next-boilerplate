@@ -1,6 +1,7 @@
 import Typography from '@/components/Typography';
 import { BillTrackStatus } from '@/models/money-track/BillTrack';
 import { getBillOfMonth } from '@/queries/billTrack/getBillOfMonth';
+import { getMonthsWithBills } from '@/queries/billTrack/getMonthsWithBills';
 import { cn } from '@/utils/cn';
 import mapDocumentToClient from '@/utils/mapDocumentToClient';
 
@@ -23,7 +24,20 @@ export default async function ResumenMonthPage({
     .map(mapDocumentToClient);
 
   if (!bills || bills.length === 0) {
-    return <EmptySection month={month} />;
+    const monthsWithBills = await getMonthsWithBills();
+    const date = new Date();
+    return (
+      <EmptySection
+        date={
+          new Date(
+            date.getFullYear(),
+            date.getMonth() + month + 1,
+            date.getDate(),
+          )
+        }
+        monthsAvailables={monthsWithBills}
+      />
+    );
   }
 
   const hasPaidBills = paidBills.length > 0;

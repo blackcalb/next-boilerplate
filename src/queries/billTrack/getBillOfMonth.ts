@@ -28,25 +28,6 @@ export async function getBillOfMonth(
 
   const currentMonth = new Date().getMonth();
 
-  // const bills = await BillTrack.find({
-  //   date: {
-  //     $gte: new Date(
-  //       new Date().getFullYear(),
-  //       currentMonth + deltaFromCurrentMonth,
-  //       1,
-  //     ),
-  //     $lt: new Date(
-  //       new Date().getFullYear(),
-  //       currentMonth + deltaFromCurrentMonth + 1,
-  //       1,
-  //     ),
-  //   },
-  //   userId,
-  //   status: {
-  //     $ne: BillTrackStatus.Deleted,
-  //   },
-  // });
-
   const bills = await BillTrack.aggregate([
     {
       $match: {
