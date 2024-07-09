@@ -19,9 +19,9 @@ export default function BankAccountItem({
           'flex gap-4 items-center',
         )}
       >
-        <div className="flex flex-1 items-center gap-4">
-          <FontAwesomeIcon icon={faMoneyBill} size="3x" />
-          {bankAccount.name}
+        <div className="flex flex-1 items-center gap-2">
+          <FontAwesomeIcon icon={faMoneyBill} size="xl" />
+          <Typography className="font-bold">{bankAccount.name}</Typography>
         </div>
         <Typography>
           {Intl.NumberFormat('en-US', {
