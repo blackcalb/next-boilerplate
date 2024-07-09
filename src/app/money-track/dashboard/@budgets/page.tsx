@@ -9,8 +9,10 @@ import { getCurrentBudgets } from '@/queries/budgets/getCurrentBudgets';
 import BudgetItem from '@/ui/money-track/Budget/BusgetItem';
 
 export default async function BudgetsPage() {
-  const currentBudgets = await getCurrentBudgets();
-  const getPreferences = await getUserPreferences('money-track.dashboard');
+  const [currentBudgets, getPreferences] = await Promise.all([
+    getCurrentBudgets(),
+    getUserPreferences('money-track.dashboard'),
+  ]);
 
   return (
     <Card

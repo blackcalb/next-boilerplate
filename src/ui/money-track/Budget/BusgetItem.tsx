@@ -20,63 +20,70 @@ export default function BudgetItem({ budget }: Readonly<BudgetItemProps>) {
         'w-full px-4 py-2',
         'border-2 border-sky-600 rounded-md',
         'bg-sky-500 text-black',
-        'flex items-center gap-4',
+        'flex flex-col items-center',
       )}
     >
-      <div className="flex-1">
+      <div className="flex w-full items-center justify-between">
         <Link href={`/money-track/budgets/${budget._id}`}>
-          <Typography className="text-xl font-bold">{budget.name}</Typography>
+          <Typography className="font-bold">{budget.name}</Typography>
         </Link>
-        <Typography className="hidden md:inline-flex">
-          {Intl.DateTimeFormat('en-US', {
-            dateStyle: 'medium',
-          }).format(budget.from)}{' '}
-          <FontAwesomeIcon icon={faArrowRight} className="px-2" />
-          {Intl.DateTimeFormat('en-US', {
-            dateStyle: 'medium',
-          }).format(budget.to)}
-        </Typography>
+        <div className="flex items-center">
+          <Typography className="text-sm">
+            {Intl.DateTimeFormat('en-US', {
+              dateStyle: 'medium',
+            }).format(budget.from)}
+          </Typography>
+          <div>
+            <FontAwesomeIcon icon={faArrowRight} className="px-2" />
+          </div>
+          <Typography className="text-sm">
+            {Intl.DateTimeFormat('en-US', {
+              dateStyle: 'medium',
+            }).format(budget.to)}
+          </Typography>
+        </div>
       </div>
-      <div className="flex-1">
-        <Typography>
+      <div className="flex w-full justify-between gap-2">
+        <Typography className="line-clamp-3 text-sm italic">
           {budget.category.map((category) => category.name).join(', ')}
         </Typography>
-      </div>
-      <div className="text-center">
-        <Typography className="text-lg font-bold">
-          {Intl.NumberFormat('en-EU', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(budget.amount_spent)}
-        </Typography>
-        <Typography>
-          {Intl.NumberFormat('en-EU', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(budget.budget)}
-        </Typography>
-      </div>
-      <div className="text-center">
-        <Typography className="text-2xl">
-          {Intl.NumberFormat('en-EU', {
-            style: 'percent',
-          }).format(percentageUser)}
-        </Typography>
-        <Typography className="text-sm"> (used)</Typography>
-      </div>
-      <div className="hidden sm:grid sm:grid-cols-10 sm:grid-rows-10">
-        {new Array(100)
-          .fill(0)
-          .map((_, index) => index + 1)
-          .map((item) => (
-            <div
-              key={item}
-              className={cn(
-                'w-1 h-1',
-                item <= percentageUser * 100 ? 'bg-orange-500' : 'bg-green-500',
-              )}
-            />
-          ))}
+        <div>
+          <Typography className=" font-bold">
+            {Intl.NumberFormat('en-EU', {
+              style: 'currency',
+              currency: 'USD',
+            }).format(budget.amount_spent)}
+          </Typography>
+          <Typography className="text-sm">
+            {Intl.NumberFormat('en-EU', {
+              style: 'currency',
+              currency: 'USD',
+            }).format(budget.budget)}
+          </Typography>
+        </div>
+        <div className="flex gap-2">
+          <Typography className="text-2xl">
+            {Intl.NumberFormat('en-EU', {
+              style: 'percent',
+            }).format(percentageUser)}
+          </Typography>
+          <div className="grid size-[40px] grid-cols-10 grid-rows-10 gap-0">
+            {new Array(100)
+              .fill(0)
+              .map((_, index) => index + 1)
+              .map((item) => (
+                <div
+                  key={item}
+                  className={cn(
+                    'w-1 h-1',
+                    item <= percentageUser * 100
+                      ? 'bg-orange-500'
+                      : 'bg-green-500',
+                  )}
+                />
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );
